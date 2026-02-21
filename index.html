@@ -122,16 +122,24 @@
     <!-- 登入頁面 -->
     <div id="login-screen" class="max-w-md mx-auto neon-card p-8 mt-10">
         <h1 class="text-3xl font-bold text-center mb-6 text-gray-800">🤖 AI 崛起：未來世界</h1>
-        <p class="text-center text-gray-600 mb-8">請輸入資料開始學習之旅</p>
+        <p class="text-center text-gray-600 mb-8">請選擇班級並輸入資料開始學習</p>
         
         <div class="space-y-4">
             <div>
                 <label class="block text-sm font-medium text-gray-700">班級</label>
-                <input type="text" id="user-class" placeholder="例如：801" class="w-full p-3 rounded-lg border focus:outline-none focus:ring-2 focus:ring-purple-400">
+                <select id="user-class" class="w-full p-3 rounded-lg border focus:outline-none focus:ring-2 focus:ring-purple-400 bg-white">
+                    <option value="">請選擇班級</option>
+                    <option value="801">801</option>
+                    <option value="802">802</option>
+                    <option value="803">803</option>
+                    <option value="804">804</option>
+                    <option value="805">805</option>
+                    <option value="806">806</option>
+                </select>
             </div>
             <div>
                 <label class="block text-sm font-medium text-gray-700">座號</label>
-                <input type="number" id="user-no" placeholder="01" class="w-full p-3 rounded-lg border focus:outline-none focus:ring-2 focus:ring-purple-400">
+                <input type="number" id="user-no" placeholder="例如：01" class="w-full p-3 rounded-lg border focus:outline-none focus:ring-2 focus:ring-purple-400">
             </div>
             <div>
                 <label class="block text-sm font-medium text-gray-700">姓名</label>
@@ -154,7 +162,6 @@
 
     <!-- 學習主畫面 -->
     <div id="game-container" class="max-w-5xl mx-auto hidden">
-        <!-- 頂部資訊列 -->
         <div class="flex flex-wrap justify-between items-center mb-6 bg-white p-4 rounded-xl shadow-sm">
             <div class="flex items-center space-x-4">
                 <span class="font-bold text-purple-600" id="display-info"></span>
@@ -209,7 +216,7 @@
                         10
                     </div>
                     <div id="content-area">
-                        <!-- 內容動態插入 -->
+                        <!-- 題目動態插入 -->
                     </div>
                 </div>
             </div>
@@ -225,7 +232,7 @@
             <div class="flex justify-between border-b pb-2"><span>答對題數：</span><span id="final-correct" class="font-bold text-blue-600"></span></div>
             <div class="flex justify-between border-b pb-2"><span>測驗原始得分：</span><span id="final-raw-score" class="font-bold text-blue-600"></span></div>
             <div id="bonus-row" class="flex justify-between text-green-600 hidden">
-                <span>📚 認真學習加成：</span><span class="font-bold">+5%</span>
+                <span>📚 學習加成 (閱讀重點)：</span><span class="font-bold">+5%</span>
             </div>
             <div class="flex justify-between text-xl pt-2"><span>最終總得分：</span><span id="final-score" class="font-bold text-purple-600"></span></div>
             <div class="flex justify-between text-sm text-gray-500"><span>總花費時間：</span><span id="final-time"></span></div>
@@ -300,7 +307,7 @@
 
             document.getElementById('login-screen').classList.add('hidden');
             document.getElementById('game-container').classList.remove('hidden');
-            document.getElementById('display-info').innerText = `${currentUser.class} ${currentUser.no}號 ${currentUser.name}`;
+            document.getElementById('display-info').innerText = `${currentUser.class} 班 ${currentUser.no}號 ${currentUser.name}`;
             
             startGlobalTimer();
             loadLevel(0);
@@ -346,48 +353,40 @@
             
             if(levelIdx === 0) {
                 content = `
-                    <div class="study-note ${isRead ? 'read' : ''}"><h4 class="font-bold">AI 基礎</h4><p class="text-sm">模仿人類智慧，包含感知與決策。弱 AI (專注單一任務) 是目前主流。</p></div>
-                    <div class="study-note ${isRead ? 'read' : ''}"><h4 class="font-bold">分辨 AI</h4><p class="text-sm">關鍵在於「是否具備學習與適應力」，而非單純依照固定腳本運作。</p></div>
+                    <div class="study-note ${isRead ? 'read' : ''}"><h4 class="font-bold">AI 基礎</h4><p class="text-sm">人工智慧旨在模仿人類智慧。目前我們使用的多為「弱 AI」，即專注於解決單一特定問題的技術。</p></div>
+                    <div class="study-note ${isRead ? 'read' : ''}"><h4 class="font-bold">分辨關鍵</h4><p class="text-sm">AI 與傳統程式最大的不同在於，AI 具有學習與優化的能力，而不僅僅是執行死板的預設指令。</p></div>
                 `;
             } else if(levelIdx === 1) {
                 content = `
-                    <div class="study-note ${isRead ? 'read' : ''}"><h4 class="font-bold">機器學習</h4><p class="text-sm">從大量歷史數據中找出規律。例如：辨識照片中的貓狗。</p></div>
-                    <div class="study-note ${isRead ? 'read' : ''}"><h4 class="font-bold">主要應用</h4><p class="text-sm">CV (電腦視覺)、NLP (自然語言處理)、推薦系統 (如 YouTube 推薦)。</p></div>
+                    <div class="study-note ${isRead ? 'read' : ''}"><h4 class="font-bold">機器學習 (ML)</h4><p class="text-sm">AI 的一個分支，透過數據訓練模型。例如：藉由數萬張照片讓模型學會分辨「貓」與「狗」。</p></div>
+                    <div class="study-note ${isRead ? 'read' : ''}"><h4 class="font-bold">應用領域</h4><p class="text-sm">電腦視覺 (辨識圖像)、自然語言處理 (語音翻譯) 與大數據推薦系統都是常見應用。</p></div>
                 `;
             } else {
                 content = `
-                    <div class="study-note ${isRead ? 'read' : ''}"><h4 class="font-bold">Deepfake 威脅</h4><p class="text-sm">利用 AI 進行變臉與仿聲。可能涉及妨害秘密罪或性隱私法律。</p></div>
-                    <div class="study-note ${isRead ? 'read' : ''}"><h4 class="font-bold">倫理問題</h4><p class="text-sm">訓練數據若有偏見，AI 就會產生歧視。隱私權也是重點議題。</p></div>
+                    <div class="study-note ${isRead ? 'read' : ''}"><h4 class="font-bold">Deepfake 技術</h4><p class="text-sm">利用深度學習合成偽造的臉部或聲音。這可能涉及妨害秘密、身份詐騙及性隱私權保護法。</p></div>
+                    <div class="study-note ${isRead ? 'read' : ''}"><h4 class="font-bold">倫理規範</h4><p class="text-sm">我們必須注意 AI 可能產生的算法偏見、隱私侵犯以及版權歸屬問題。</p></div>
                 `;
             }
             notesEl.innerHTML = content;
             
             if(isRead) {
-                statusEl.innerText = "本關閱讀完成 ✅";
+                statusEl.innerText = "閱讀完成 ✅";
                 statusEl.className = "text-xs bg-green-100 px-2 py-1 rounded text-green-600";
                 btnEl.disabled = true;
                 btnEl.innerText = "已完成閱讀";
                 btnEl.className = "w-full py-2 bg-green-50 text-green-500 rounded-lg text-sm font-bold cursor-default";
             } else {
-                statusEl.innerText = "本關尚未閱讀";
+                statusEl.innerText = "尚未閱讀";
                 statusEl.className = "text-xs bg-gray-100 px-2 py-1 rounded text-gray-400";
                 btnEl.disabled = false;
-                btnEl.innerText = "我已閱讀完此部分內容";
-                btnEl.className = "w-full py-2 bg-purple-50 text-purple-600 rounded-lg text-sm font-bold hover:bg-purple-100 transition";
+                btnEl.innerText = "我已閱讀完畢 (加分項)";
+                btnEl.className = "w-full py-2 bg-purple-50 text-purple-600 rounded-lg text-sm font-bold hover:bg-purple-100 transition shadow-sm";
             }
         }
 
         function markAsRead() {
             readProgress[currentLevel] = true;
             updateNotes(currentLevel);
-            checkAllRead();
-        }
-
-        function checkAllRead() {
-            const allRead = readProgress.every(r => r === true);
-            if(allRead) {
-                console.log("All content read! Bonus activated.");
-            }
         }
 
         function loadQuestion() {
@@ -429,7 +428,7 @@
                         </div>
                         <div class="grid grid-cols-2 gap-4">
                             <div class="drop-zone p-4" ondragover="onDragOver(event)" ondrop="onDrop(event, 'YWk=')"><p class="text-xs text-gray-400 mb-2">基於 AI 技術</p></div>
-                            <div class="drop-zone p-4" ondragover="onDragOver(event)" ondrop="onDrop(event, 'bm90YWk=')"><p class="text-xs text-gray-400 mb-2">傳統定時/計算</p></div>
+                            <div class="drop-zone p-4" ondragover="onDragOver(event)" ondrop="onDrop(event, 'bm90YWk=')"><p class="text-xs text-gray-400 mb-2">傳統程式/計算</p></div>
                         </div>
                         <button onclick="checkDragAnswer()" class="btn-neon w-full mt-4">確認分類</button>
                     </div>
@@ -533,10 +532,7 @@
             } else {
                 box.classList.add('wrong-shake');
             }
-
-            setTimeout(() => {
-                nextQuestion();
-            }, 800);
+            setTimeout(() => { nextQuestion(); }, 800);
         }
 
         function nextQuestion() {
@@ -559,11 +555,10 @@
             document.getElementById('game-container').classList.add('hidden');
             document.getElementById('result-screen').classList.remove('hidden');
             
-            // 計算最終分數 (包含加成)
             const allRead = readProgress.every(r => r === true);
             let finalScore = score;
             if (allRead) {
-                finalScore = Math.round(score * 1.05 * 10) / 10; // 增加 5%
+                finalScore = Math.round(score * 1.05 * 10) / 10;
                 document.getElementById('bonus-row').classList.remove('hidden');
             }
 
