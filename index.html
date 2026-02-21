@@ -21,7 +21,7 @@
         }
 
         .neon-card {
-            background: rgba(255, 255, 255, 0.9);
+            background: rgba(255, 255, 255, 0.95);
             border-radius: 20px;
             box-shadow: 0 10px 30px rgba(188, 19, 254, 0.1);
             border: 2px solid transparent;
@@ -60,6 +60,20 @@
 
         .btn-neon:active {
             transform: scale(0.95);
+        }
+
+        .study-note {
+            border-left: 4px solid var(--neon-purple);
+            background: rgba(188, 19, 254, 0.05);
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-radius: 0 10px 10px 0;
+            transition: all 0.3s;
+        }
+
+        .study-note.read {
+            border-left-color: #4ade80;
+            background: rgba(74, 222, 128, 0.1);
         }
 
         @keyframes shake {
@@ -139,7 +153,7 @@
     </div>
 
     <!-- 學習主畫面 -->
-    <div id="game-container" class="max-w-4xl mx-auto hidden">
+    <div id="game-container" class="max-w-5xl mx-auto hidden">
         <!-- 頂部資訊列 -->
         <div class="flex flex-wrap justify-between items-center mb-6 bg-white p-4 rounded-xl shadow-sm">
             <div class="flex items-center space-x-4">
@@ -157,28 +171,47 @@
                     <span id="timer-text" class="font-bold timer-badge">0s</span>
                 </div>
                 <div class="text-center px-4 py-1 bg-purple-50 rounded-full">
-                    <span class="text-xs block text-purple-500">分數</span>
+                    <span class="text-xs block text-purple-500">得分</span>
                     <span id="score-text" class="font-bold">0</span>
                 </div>
             </div>
         </div>
 
-        <!-- 關卡導覽 -->
-        <div id="level-nav" class="grid grid-cols-3 gap-4 mb-8">
-            <button id="nav-1" class="p-4 rounded-xl bg-white shadow font-bold text-gray-400 border-b-4 border-gray-200" disabled>LEVEL 1</button>
-            <button id="nav-2" class="p-4 rounded-xl bg-white shadow font-bold text-gray-400 border-b-4 border-gray-200" disabled>LEVEL 2</button>
-            <button id="nav-3" class="p-4 rounded-xl bg-white shadow font-bold text-gray-400 border-b-4 border-gray-200" disabled>LEVEL 3</button>
-        </div>
-
-        <!-- 題目區域 -->
-        <div id="question-box" class="neon-card p-6 md:p-10 min-h-[400px] flex flex-col relative">
-            <!-- 搶答倒數計時器 -->
-            <div id="rush-timer" class="absolute top-4 right-4 w-12 h-12 rounded-full border-4 border-orange-400 flex items-center justify-center font-bold text-orange-500 hidden">
-                10
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <!-- 左側：學習重點筆記 -->
+            <div class="lg:col-span-1 space-y-4">
+                <div class="neon-card p-5 h-full flex flex-col min-h-[500px]">
+                    <h3 class="font-bold text-lg mb-4 text-purple-700 border-b pb-2 flex justify-between items-center">
+                        📖 學習重點筆記
+                        <span id="read-status" class="text-xs bg-gray-100 px-2 py-1 rounded text-gray-500">未完成閱讀</span>
+                    </h3>
+                    <div id="study-notes" class="flex-grow overflow-y-auto">
+                        <!-- 動態內容 -->
+                    </div>
+                    <div class="mt-4 pt-4 border-t">
+                        <button id="btn-confirm-read" onclick="markAsRead()" class="w-full py-2 bg-gray-100 text-gray-600 rounded-lg text-sm font-bold hover:bg-green-100 hover:text-green-700 transition">
+                            我已閱讀完此部分內容
+                        </button>
+                    </div>
+                </div>
             </div>
 
-            <div id="content-area">
-                <!-- 內容動態插入 -->
+            <!-- 右側：測驗區 -->
+            <div class="lg:col-span-2">
+                <div id="level-nav" class="grid grid-cols-3 gap-4 mb-6">
+                    <button id="nav-1" class="p-4 rounded-xl bg-white shadow font-bold text-gray-400 border-b-4 border-gray-200" disabled>LEVEL 1</button>
+                    <button id="nav-2" class="p-4 rounded-xl bg-white shadow font-bold text-gray-400 border-b-4 border-gray-200" disabled>LEVEL 2</button>
+                    <button id="nav-3" class="p-4 rounded-xl bg-white shadow font-bold text-gray-400 border-b-4 border-gray-200" disabled>LEVEL 3</button>
+                </div>
+
+                <div id="question-box" class="neon-card p-6 md:p-10 min-h-[450px] flex flex-col relative">
+                    <div id="rush-timer" class="absolute top-4 right-4 w-12 h-12 rounded-full border-4 border-orange-400 flex items-center justify-center font-bold text-orange-500 hidden">
+                        10
+                    </div>
+                    <div id="content-area">
+                        <!-- 內容動態插入 -->
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -188,35 +221,34 @@
         <div class="text-6xl mb-4">🏆</div>
         <h2 class="text-3xl font-bold mb-2">學習完成！</h2>
         <p class="text-gray-600 mb-6">成績已上傳至雲端系統</p>
-        <div class="bg-gray-50 p-6 rounded-xl space-y-2 mb-8">
-            <div class="flex justify-between"><span>答對題數：</span><span id="final-correct" class="font-bold text-blue-600"></span></div>
-            <div class="flex justify-between"><span>總花費時間：</span><span id="final-time" class="font-bold text-blue-600"></span></div>
+        <div class="bg-gray-50 p-6 rounded-xl space-y-4 mb-8">
+            <div class="flex justify-between border-b pb-2"><span>答對題數：</span><span id="final-correct" class="font-bold text-blue-600"></span></div>
+            <div class="flex justify-between border-b pb-2"><span>測驗原始得分：</span><span id="final-raw-score" class="font-bold text-blue-600"></span></div>
+            <div id="bonus-row" class="flex justify-between text-green-600 hidden">
+                <span>📚 認真學習加成：</span><span class="font-bold">+5%</span>
+            </div>
+            <div class="flex justify-between text-xl pt-2"><span>最終總得分：</span><span id="final-score" class="font-bold text-purple-600"></span></div>
+            <div class="flex justify-between text-sm text-gray-500"><span>總花費時間：</span><span id="final-time"></span></div>
         </div>
         <button onclick="location.reload()" class="w-full btn-neon">重新挑戰</button>
     </div>
 
     <script>
-        /** * 加密工具 (簡單混淆)
-         * 教師密碼 0426
-         * Base64(0426) = "MDQyNg=="
-         */
         const _S = "MDQyNg=="; 
         const _A = (s) => btoa(encodeURIComponent(s));
-        const _B = (s) => decodeURIComponent(atob(s));
 
-        // 題目與答案加密儲存
         const levelsData = [
             {
                 level: 1,
                 title: "LEVEL 1：AI 基礎概念",
                 questions: [
-                    { type: 'tf', q: "AI (人工智慧) 的目標是讓機器模擬人類的思考與學習能力。", a: "VHJ1ZQ==" }, // True
-                    { type: 'tf', q: "目前所有的 AI 都已經擁有像人類一樣的自我意識與情感。", a: "RmFsc2U=" }, // False
-                    { type: 'drag', q: "請分類以下技術是否屬於 AI 技術：", items: [
-                        { t: "ChatGPT", cat: "YWk=" }, // ai
-                        { t: "傳統洗衣機定時", cat: "bm90YWk=" }, // notai
-                        { t: "自動駕駛導航", cat: "YWk=" },
-                        { t: "計算機加減運算", cat: "bm90YWk=" }
+                    { type: 'tf', q: "人工智慧 (AI) 主要是讓電腦模仿人類的智慧，包含感知、學習與決策能力。", a: "VHJ1ZQ==" },
+                    { type: 'choice', q: "目前手機常見的「Siri」或「Google 助理」，屬於哪一類的 AI？", options: ["強人工智慧 (General AI)", "弱人工智慧 (Narrow AI)", "超級人工智慧 (Super AI)", "以上皆非"], a: "弱人工智慧 (Narrow AI)" },
+                    { type: 'drag', q: "請分類以下技術是否主要基於 AI 技術發展：", items: [
+                        { t: "影像辨識解鎖", cat: "YWk=" }, 
+                        { t: "紅綠燈定時器", cat: "bm90YWk=" }, 
+                        { t: "ChatGPT 生成文案", cat: "YWk=" },
+                        { t: "計算機開平方根", cat: "bm90YWk=" }
                     ]}
                 ]
             },
@@ -224,21 +256,21 @@
                 level: 2,
                 title: "LEVEL 2：AI 生活應用",
                 questions: [
-                    { type: 'choice', q: "當你使用串流平台（如 Netflix）時，系統推薦你可能喜歡的影片，這主要是應用了哪種技術？", options: ["雲端儲存", "區塊鏈", "機器學習推薦演算法", "擴增實境"], a: "機器學習推薦演算法" },
-                    { type: 'match', q: "將 AI 應用與其功能配對：", pairs: [
-                        { l: "人臉辨識", r: "身分驗證", id: 1 },
-                        { l: "語音助理", r: "自然語言處理", id: 2 },
-                        { l: "醫療 AI", r: "影像輔助診斷", id: 3 }
+                    { type: 'choice', q: "AI 能夠辨識手寫數字或照片中的貓，是因為使用了哪種關鍵技術來從經驗中學習？", options: ["大數據搬運", "機器學習 (Machine Learning)", "人力雲端輸入", "區塊鏈加密"], a: "機器學習 (Machine Learning)" },
+                    { type: 'match', q: "將 AI 應用與其背後的技術功能正確配對：", pairs: [
+                        { l: "自駕車偵測障礙", r: "電腦視覺 (CV)", id: 1 },
+                        { l: "翻譯筆即時對話", r: "自然語言處理 (NLP)", id: 2 },
+                        { l: "智慧醫療篩選病灶", r: "醫學影像分析", id: 3 }
                     ]}
                 ]
             },
             {
                 level: 3,
-                title: "LEVEL 3：Deepfake 與法律",
+                title: "LEVEL 3：Deepfake 與倫理法律",
                 questions: [
-                    { type: 'tf', q: "Deepfake (深偽技術) 只能用來製作搞笑影片，不會造成法律問題。", a: "RmFsc2U=" },
-                    { type: 'choice', q: "如果有人利用 AI 換臉技術製作他人色情影片並傳播，這在台灣會觸犯什麼法律？", options: ["妨害秘密罪", "個人資料保護法", "妨害性隱私及不雅訊號罪", "以上皆是"], a: "以上皆是" },
-                    { type: 'rush', q: "【搶答】看到非常擬真的政治人物演講影片，應先做什麼？", options: ["立刻分享", "查證多方來源與事實", "檢舉影片", "下載保存"], a: "查證多方來源與事實" }
+                    { type: 'tf', q: "Deepfake 技術僅僅是軟體合成，只要沒有金錢詐騙，就不會觸法。", a: "RmFsc2U=" },
+                    { type: 'choice', q: "在使用 AI 生成圖像或文章時，哪一項是最需要注意的倫理問題？", options: ["電腦運算速度", "生成內容的智慧財產權與偏見", "顯示器螢幕解析度", "檔案儲存格式"], a: "生成內容的智慧財產權與偏見" },
+                    { type: 'rush', q: "【搶答】若在網路上看到名人說出違法言論，第一步應做什麼？", options: ["立即截圖轉貼分享", "查證是否為 Deepfake 變臉影片", "下載影片永久保存", "直接在底下留言開罵"], a: "查證是否為 Deepfake 變臉影片" }
                 ]
             }
         ];
@@ -251,10 +283,11 @@
         let totalTime = 0;
         let gameTimer;
         let rushTimerInterval;
-        // 已更新為您提供的 GAS 連結
         let gasUrl = "https://script.google.com/macros/s/AKfycbzucU67nYMhc6hdjV2E1Z5mPckxnhHMmjegb0YHqbizKWMblQ8x6N7LeJfsPY_CK6Ddgg/exec"; 
 
-        // 初始化
+        // 追蹤閱讀進度
+        let readProgress = [false, false, false];
+
         function startApp() {
             currentUser.class = document.getElementById('user-class').value;
             currentUser.no = document.getElementById('user-no').value;
@@ -285,6 +318,7 @@
             currentQIdx = 0;
             updateNav();
             loadQuestion();
+            updateNotes(idx);
         }
 
         function updateNav() {
@@ -302,6 +336,60 @@
             document.getElementById('energy-fill').style.width = progress + '%';
         }
 
+        function updateNotes(levelIdx) {
+            const notesEl = document.getElementById('study-notes');
+            const statusEl = document.getElementById('read-status');
+            const btnEl = document.getElementById('btn-confirm-read');
+            
+            let content = "";
+            const isRead = readProgress[levelIdx];
+            
+            if(levelIdx === 0) {
+                content = `
+                    <div class="study-note ${isRead ? 'read' : ''}"><h4 class="font-bold">AI 基礎</h4><p class="text-sm">模仿人類智慧，包含感知與決策。弱 AI (專注單一任務) 是目前主流。</p></div>
+                    <div class="study-note ${isRead ? 'read' : ''}"><h4 class="font-bold">分辨 AI</h4><p class="text-sm">關鍵在於「是否具備學習與適應力」，而非單純依照固定腳本運作。</p></div>
+                `;
+            } else if(levelIdx === 1) {
+                content = `
+                    <div class="study-note ${isRead ? 'read' : ''}"><h4 class="font-bold">機器學習</h4><p class="text-sm">從大量歷史數據中找出規律。例如：辨識照片中的貓狗。</p></div>
+                    <div class="study-note ${isRead ? 'read' : ''}"><h4 class="font-bold">主要應用</h4><p class="text-sm">CV (電腦視覺)、NLP (自然語言處理)、推薦系統 (如 YouTube 推薦)。</p></div>
+                `;
+            } else {
+                content = `
+                    <div class="study-note ${isRead ? 'read' : ''}"><h4 class="font-bold">Deepfake 威脅</h4><p class="text-sm">利用 AI 進行變臉與仿聲。可能涉及妨害秘密罪或性隱私法律。</p></div>
+                    <div class="study-note ${isRead ? 'read' : ''}"><h4 class="font-bold">倫理問題</h4><p class="text-sm">訓練數據若有偏見，AI 就會產生歧視。隱私權也是重點議題。</p></div>
+                `;
+            }
+            notesEl.innerHTML = content;
+            
+            if(isRead) {
+                statusEl.innerText = "本關閱讀完成 ✅";
+                statusEl.className = "text-xs bg-green-100 px-2 py-1 rounded text-green-600";
+                btnEl.disabled = true;
+                btnEl.innerText = "已完成閱讀";
+                btnEl.className = "w-full py-2 bg-green-50 text-green-500 rounded-lg text-sm font-bold cursor-default";
+            } else {
+                statusEl.innerText = "本關尚未閱讀";
+                statusEl.className = "text-xs bg-gray-100 px-2 py-1 rounded text-gray-400";
+                btnEl.disabled = false;
+                btnEl.innerText = "我已閱讀完此部分內容";
+                btnEl.className = "w-full py-2 bg-purple-50 text-purple-600 rounded-lg text-sm font-bold hover:bg-purple-100 transition";
+            }
+        }
+
+        function markAsRead() {
+            readProgress[currentLevel] = true;
+            updateNotes(currentLevel);
+            checkAllRead();
+        }
+
+        function checkAllRead() {
+            const allRead = readProgress.every(r => r === true);
+            if(allRead) {
+                console.log("All content read! Bonus activated.");
+            }
+        }
+
         function loadQuestion() {
             const level = levelsData[currentLevel];
             const q = level.questions[currentQIdx];
@@ -314,13 +402,13 @@
             clearInterval(rushTimerInterval);
 
             let html = `<h2 class="text-xl font-bold mb-4 text-gray-700">${level.title} - 第 ${currentQIdx + 1} 題</h2>`;
-            html += `<p class="text-lg mb-6">${q.q}</p>`;
+            html += `<p class="text-lg mb-6 leading-relaxed">${q.q}</p>`;
 
             if (q.type === 'tf') {
                 html += `
                     <div class="flex space-x-4">
-                        <button onclick="checkAnswer('True')" class="flex-1 py-4 rounded-xl border-2 hover:bg-blue-50 transition font-bold text-2xl">⭕ 是</button>
-                        <button onclick="checkAnswer('False')" class="flex-1 py-4 rounded-xl border-2 hover:bg-red-50 transition font-bold text-2xl">❌ 否</button>
+                        <button onclick="checkAnswer('True')" class="flex-1 py-6 rounded-xl border-2 hover:bg-blue-50 transition font-bold text-3xl">⭕</button>
+                        <button onclick="checkAnswer('False')" class="flex-1 py-6 rounded-xl border-2 hover:bg-red-50 transition font-bold text-3xl">❌</button>
                     </div>
                 `;
             } else if (q.type === 'choice' || q.type === 'rush') {
@@ -330,41 +418,39 @@
                 }
                 html += `<div class="grid grid-cols-1 gap-3">`;
                 q.options.forEach(opt => {
-                    html += `<button onclick="checkAnswer('${opt}')" class="w-full py-3 px-4 text-left rounded-lg border-2 hover:border-purple-300 hover:bg-purple-50 transition">${opt}</button>`;
+                    html += `<button onclick="checkAnswer('${opt}')" class="w-full py-3 px-4 text-left rounded-lg border-2 hover:border-purple-300 hover:bg-purple-50 transition text-sm md:text-base">${opt}</button>`;
                 });
                 html += `</div>`;
             } else if (q.type === 'drag') {
                 html += `
                     <div class="space-y-4">
                         <div class="flex flex-wrap gap-2 mb-4" id="drag-items">
-                            ${q.items.map((it, i) => `<div draggable="true" ondragstart="onDragStart(event, ${i})" class="bg-white border-2 border-blue-200 p-2 rounded cursor-move shadow-sm">${it.t}</div>`).join('')}
+                            ${q.items.map((it, i) => `<div draggable="true" ondragstart="onDragStart(event, ${i})" class="bg-white border-2 border-blue-200 p-2 rounded cursor-move shadow-sm text-sm">${it.t}</div>`).join('')}
                         </div>
                         <div class="grid grid-cols-2 gap-4">
-                            <div class="drop-zone p-4" ondragover="onDragOver(event)" ondrop="onDrop(event, 'YWk=')"><p class="text-xs text-gray-400 mb-2">AI 技術</p></div>
-                            <div class="drop-zone p-4" ondragover="onDragOver(event)" ondrop="onDrop(event, 'bm90YWk=')"><p class="text-xs text-gray-400 mb-2">非 AI 技術</p></div>
+                            <div class="drop-zone p-4" ondragover="onDragOver(event)" ondrop="onDrop(event, 'YWk=')"><p class="text-xs text-gray-400 mb-2">基於 AI 技術</p></div>
+                            <div class="drop-zone p-4" ondragover="onDragOver(event)" ondrop="onDrop(event, 'bm90YWk=')"><p class="text-xs text-gray-400 mb-2">傳統定時/計算</p></div>
                         </div>
-                        <button onclick="checkDragAnswer()" class="btn-neon w-full mt-4">確認送出</button>
+                        <button onclick="checkDragAnswer()" class="btn-neon w-full mt-4">確認分類</button>
                     </div>
                 `;
             } else if (q.type === 'match') {
-                // 配對簡單化：兩排點擊
-                html += `<p class="text-sm text-gray-400 mb-4">點擊左側再點擊右側來配對</p>
+                html += `<p class="text-sm text-gray-400 mb-4">點擊左側再點擊右側來配對：</p>
                     <div class="flex justify-between space-x-4">
                         <div class="flex-1 space-y-2">
-                            ${q.pairs.map(p => `<button id="l-${p.id}" onclick="selectMatch('l', ${p.id})" class="w-full p-2 border rounded bg-white">${p.l}</button>`).join('')}
+                            ${q.pairs.map(p => `<button id="l-${p.id}" onclick="selectMatch('l', ${p.id})" class="w-full p-2 border rounded bg-white text-xs text-left">${p.l}</button>`).join('')}
                         </div>
                         <div class="flex-1 space-y-2">
-                            ${q.pairs.sort(() => Math.random()-0.5).map(p => `<button id="r-${p.id}" onclick="selectMatch('r', ${p.id})" class="w-full p-2 border rounded bg-white">${p.r}</button>`).join('')}
+                            ${q.pairs.sort(() => Math.random()-0.5).map(p => `<button id="r-${p.id}" onclick="selectMatch('r', ${p.id})" class="w-full p-2 border rounded bg-white text-xs text-left">${p.r}</button>`).join('')}
                         </div>
                     </div>
-                    <button onclick="checkMatchAnswer()" class="btn-neon w-full mt-4">確認配對</button>
+                    <button onclick="checkMatchAnswer()" class="btn-neon w-full mt-4">完成配對</button>
                 `;
             }
 
             area.innerHTML = html;
         }
 
-        // 搶答計時
         function startRushTimer(sec) {
             let left = sec;
             const el = document.getElementById('rush-timer');
@@ -379,7 +465,6 @@
             }, 1000);
         }
 
-        // 拖曳處理
         let draggedItemIdx = null;
         window.onDragStart = (e, idx) => { draggedItemIdx = idx; };
         window.onDragOver = (e) => { e.preventDefault(); e.currentTarget.classList.add('active'); };
@@ -399,20 +484,31 @@
             handleAnswer(isAllCorrect);
         }
 
-        // 配對處理
         let selectedL = null;
         let selectedR = null;
         let userMatches = [];
         window.selectMatch = (side, id) => {
-            if(side === 'l') selectedL = id;
-            if(side === 'r') selectedR = id;
+            if(side === 'l') {
+                document.querySelectorAll("[id^='l-']").forEach(b => b.classList.remove('bg-purple-100'));
+                selectedL = id;
+                document.getElementById(`l-${id}`).classList.add('bg-purple-100');
+            }
+            if(side === 'r') {
+                document.querySelectorAll("[id^='r-']").forEach(b => b.classList.remove('bg-purple-100'));
+                selectedR = id;
+                document.getElementById(`r-${id}`).classList.add('bg-purple-100');
+            }
             if(selectedL && selectedR) {
+                userMatches = userMatches.filter(m => m.l !== selectedL);
                 userMatches.push({l: selectedL, r: selectedR});
-                document.getElementById(`l-${selectedL}`).classList.add('bg-blue-100');
-                document.getElementById(`r-${selectedR}`).classList.add('bg-blue-100');
+                document.getElementById(`l-${selectedL}`).classList.remove('bg-purple-100');
+                document.getElementById(`r-${selectedR}`).classList.remove('bg-purple-100');
+                document.getElementById(`l-${selectedL}`).classList.add('bg-green-100');
+                document.getElementById(`r-${selectedR}`).classList.add('bg-green-100');
                 selectedL = selectedR = null;
             }
         };
+
         function checkMatchAnswer() {
             const q = levelsData[currentLevel].questions[currentQIdx];
             const correctCount = userMatches.filter(m => m.l === m.r).length;
@@ -420,16 +516,10 @@
             userMatches = [];
         }
 
-        // 一般回答處理
         function checkAnswer(userAns) {
             clearInterval(rushTimerInterval);
             const q = levelsData[currentLevel].questions[currentQIdx];
-            let isCorrect = false;
-            if (q.type === 'tf') {
-                isCorrect = _A(userAns) === q.a;
-            } else {
-                isCorrect = userAns === q.a;
-            }
+            let isCorrect = (q.type === 'tf') ? (_A(userAns) === q.a) : (userAns === q.a);
             handleAnswer(isCorrect);
         }
 
@@ -468,13 +558,23 @@
             clearInterval(gameTimer);
             document.getElementById('game-container').classList.add('hidden');
             document.getElementById('result-screen').classList.remove('hidden');
+            
+            // 計算最終分數 (包含加成)
+            const allRead = readProgress.every(r => r === true);
+            let finalScore = score;
+            if (allRead) {
+                finalScore = Math.round(score * 1.05 * 10) / 10; // 增加 5%
+                document.getElementById('bonus-row').classList.remove('hidden');
+            }
+
             document.getElementById('final-correct').innerText = totalCorrect + " 題";
+            document.getElementById('final-raw-score').innerText = score + " 分";
+            document.getElementById('final-score').innerText = finalScore + " 分";
             document.getElementById('final-time').innerText = totalTime + " 秒";
             
-            uploadData();
+            uploadData(finalScore, allRead);
         }
 
-        // 老師功能
         function showAdminLogin() { document.getElementById('admin-login').classList.remove('hidden'); }
         function hideAdminLogin() { document.getElementById('admin-login').classList.add('hidden'); }
         function checkAdmin() {
@@ -486,20 +586,21 @@
             }
         }
 
-        // 上傳數據到 GAS
-        async function uploadData() {
+        async function uploadData(finalScore, isBonus) {
             const payload = {
                 class: currentUser.class,
                 no: currentUser.no,
                 name: currentUser.name,
                 level: "Completed",
                 correct: totalCorrect,
+                rawScore: score,
+                finalScore: finalScore,
+                studyBonus: isBonus ? "Yes" : "No",
                 time: totalTime,
                 date: new Date().toLocaleString()
             };
 
             try {
-                // 使用 no-cors 模式發送，或確保 GAS 已設定好 CORS
                 await fetch(gasUrl, {
                     method: 'POST',
                     mode: 'no-cors',
@@ -507,10 +608,7 @@
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(payload)
                 });
-                console.log("Data sent to GAS");
-            } catch (e) {
-                console.error("Upload error", e);
-            }
+            } catch (e) { console.error("Upload error", e); }
         }
     </script>
 </body>
