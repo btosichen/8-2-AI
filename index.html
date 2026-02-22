@@ -28,17 +28,11 @@
             transition: all 0.3s ease;
         }
 
-        .neon-card:hover {
-            border-color: var(--neon-blue);
-            box-shadow: 0 0 20px rgba(0, 242, 255, 0.4);
-        }
-
         .ai-energy-bar {
             height: 12px;
             background: #e0e0e0;
             border-radius: 10px;
             overflow: hidden;
-            position: relative;
         }
 
         .ai-energy-fill {
@@ -58,22 +52,32 @@
             text-shadow: 0 2px 4px rgba(0,0,0,0.2);
         }
 
-        .btn-neon:active {
-            transform: scale(0.95);
-        }
-
         .study-note {
             border-left: 4px solid var(--neon-purple);
-            background: rgba(188, 19, 254, 0.05);
+            background: white;
             padding: 1rem;
             margin-bottom: 1rem;
-            border-radius: 0 10px 10px 0;
+            border-radius: 12px;
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
             transition: all 0.3s;
         }
 
         .study-note.read {
             border-left-color: #4ade80;
-            background: rgba(74, 222, 128, 0.1);
+            background: rgba(74, 222, 128, 0.05);
+        }
+
+        .icon-box {
+            background: #f3f4f6;
+            padding: 10px;
+            border-radius: 12px;
+            font-size: 1.5rem;
+            min-width: 50px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
         @keyframes shake {
@@ -82,142 +86,86 @@
             75% { transform: translateX(5px); }
         }
 
-        .wrong-shake {
-            animation: shake 0.3s ease-in-out 2;
-            border-color: #ff4d4d !important;
-        }
+        .wrong-shake { animation: shake 0.3s ease-in-out 2; border-color: #ff4d4d !important; }
 
         @keyframes glow {
-            0% { box-shadow: 0 0 5px var(--neon-blue); }
-            50% { box-shadow: 0 0 25px var(--neon-blue); }
-            100% { box-shadow: 0 0 5px var(--neon-blue); }
+            0% { box-shadow: 0 0 5px #4ade80; }
+            50% { box-shadow: 0 0 20px #4ade80; }
+            100% { box-shadow: 0 0 5px #4ade80; }
         }
 
-        .correct-glow {
-            animation: glow 0.5s ease-in-out;
-            border-color: #4ade80 !important;
-        }
+        .correct-glow { animation: glow 0.5s ease-in-out; border-color: #4ade80 !important; }
 
         .hidden { display: none; }
-
-        .drop-zone {
-            min-height: 80px;
-            border: 2px dashed #cbd5e1;
-            border-radius: 12px;
-            transition: background 0.3s;
-        }
-
-        .drop-zone.active {
-            background: rgba(0, 242, 255, 0.1);
-            border-color: var(--neon-blue);
-        }
-
-        .timer-badge {
-            font-variant-numeric: tabular-nums;
-        }
     </style>
 </head>
 <body class="p-4 md:p-8">
 
     <!-- 登入頁面 -->
     <div id="login-screen" class="max-w-md mx-auto neon-card p-8 mt-10">
-        <h1 class="text-3xl font-bold text-center mb-6 text-gray-800">🤖 AI 崛起：未來世界</h1>
-        <p class="text-center text-gray-600 mb-8">請選擇班級並輸入資料開始學習</p>
-        
+        <h1 class="text-3xl font-bold text-center mb-2 text-gray-800">🤖 AI 崛起：未來世界</h1>
+        <p class="text-center text-gray-500 mb-8 text-sm">✨ 挑戰 10 題獲得滿分 100！ ✨</p>
         <div class="space-y-4">
-            <div>
-                <label class="block text-sm font-medium text-gray-700">班級</label>
-                <select id="user-class" class="w-full p-3 rounded-lg border focus:outline-none focus:ring-2 focus:ring-purple-400 bg-white">
-                    <option value="">請選擇班級</option>
-                    <option value="801">801</option>
-                    <option value="802">802</option>
-                    <option value="803">803</option>
-                    <option value="804">804</option>
-                    <option value="805">805</option>
-                    <option value="806">806</option>
-                </select>
-            </div>
-            <div>
-                <label class="block text-sm font-medium text-gray-700">座號</label>
-                <input type="number" id="user-no" placeholder="例如：01" class="w-full p-3 rounded-lg border focus:outline-none focus:ring-2 focus:ring-purple-400">
-            </div>
-            <div>
-                <label class="block text-sm font-medium text-gray-700">姓名</label>
-                <input type="text" id="user-name" placeholder="王小明" class="w-full p-3 rounded-lg border focus:outline-none focus:ring-2 focus:ring-purple-400">
-            </div>
-            <button onclick="startApp()" class="w-full btn-neon mt-4">進入系統</button>
-            <button onclick="showAdminLogin()" class="w-full text-xs text-gray-400 hover:text-gray-600 transition">老師管理後台</button>
+            <select id="user-class" class="w-full p-3 rounded-lg border bg-white">
+                <option value="">選擇班級</option>
+                <option value="801">801</option>
+                <option value="802">802</option>
+                <option value="803">803</option>
+                <option value="804">804</option>
+                <option value="805">805</option>
+                <option value="806">806</option>
+            </select>
+            <input type="number" id="user-no" placeholder="座號" class="w-full p-3 rounded-lg border focus:ring-2 focus:ring-purple-400">
+            <input type="text" id="user-name" placeholder="姓名" class="w-full p-3 rounded-lg border focus:ring-2 focus:ring-purple-400">
+            <button onclick="startApp()" class="w-full btn-neon mt-4">進入挑戰 🚀</button>
         </div>
     </div>
 
-    <!-- 老師登入介面 -->
-    <div id="admin-login" class="max-w-md mx-auto neon-card p-8 mt-10 hidden">
-        <h2 class="text-2xl font-bold mb-4">管理員驗證</h2>
-        <input type="password" id="admin-pass" placeholder="請輸入密碼" class="w-full p-3 rounded-lg border mb-4">
-        <div class="flex gap-2">
-            <button onclick="checkAdmin()" class="flex-1 btn-neon">驗證</button>
-            <button onclick="hideAdminLogin()" class="flex-1 bg-gray-200 text-gray-700 py-3 rounded-lg">取消</button>
-        </div>
-    </div>
-
-    <!-- 學習主畫面 -->
-    <div id="game-container" class="max-w-5xl mx-auto hidden">
+    <!-- 學習與測驗主容器 -->
+    <div id="game-container" class="max-w-6xl mx-auto hidden">
         <div class="flex flex-wrap justify-between items-center mb-6 bg-white p-4 rounded-xl shadow-sm">
             <div class="flex items-center space-x-4">
                 <span class="font-bold text-purple-600" id="display-info"></span>
-                <div class="flex flex-col">
-                    <span class="text-xs text-gray-500">AI 能量儲備</span>
-                    <div class="ai-energy-bar w-32 md:w-64">
-                        <div id="energy-fill" class="ai-energy-fill"></div>
-                    </div>
+                <div class="ai-energy-bar w-32 md:w-64">
+                    <div id="energy-fill" class="ai-energy-fill"></div>
                 </div>
             </div>
-            <div class="flex space-x-4 items-center mt-2 md:mt-0">
-                <div class="text-center px-4 py-1 bg-blue-50 rounded-full">
-                    <span class="text-xs block text-blue-500">總耗時</span>
-                    <span id="timer-text" class="font-bold timer-badge">0s</span>
+            <div class="flex space-x-4">
+                <div class="bg-blue-50 px-4 py-1 rounded-full border border-blue-100 text-center">
+                    <span class="text-[10px] block text-blue-500 font-bold">TIMER</span>
+                    <span id="timer-text" class="font-bold text-blue-700">0s</span>
                 </div>
-                <div class="text-center px-4 py-1 bg-purple-50 rounded-full">
-                    <span class="text-xs block text-purple-500">得分</span>
-                    <span id="score-text" class="font-bold">0</span>
+                <div class="bg-purple-50 px-4 py-1 rounded-full border border-purple-100 text-center">
+                    <span class="text-[10px] block text-purple-500 font-bold">SCORE</span>
+                    <span id="score-text" class="font-bold text-purple-700">0</span>
                 </div>
             </div>
         </div>
 
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            <!-- 左側：學習重點筆記 -->
-            <div class="lg:col-span-1 space-y-4">
-                <div class="neon-card p-5 h-full flex flex-col min-h-[500px]">
-                    <h3 class="font-bold text-lg mb-4 text-purple-700 border-b pb-2 flex justify-between items-center">
-                        📖 學習重點筆記
-                        <span id="read-status" class="text-xs bg-gray-100 px-2 py-1 rounded text-gray-500">未完成閱讀</span>
+        <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+            <!-- 左側：教材重點 -->
+            <div class="lg:col-span-1">
+                <div class="neon-card p-5 min-h-[550px] bg-gray-50/50 flex flex-col">
+                    <h3 class="font-bold text-lg mb-4 text-purple-700 border-b pb-2 flex justify-between">
+                        <span>📖 重點筆記</span>
+                        <span id="read-status" class="text-[10px] bg-gray-200 px-2 py-0.5 rounded-full">未讀取</span>
                     </h3>
-                    <div id="study-notes" class="flex-grow overflow-y-auto">
-                        <!-- 動態內容 -->
-                    </div>
-                    <div class="mt-4 pt-4 border-t">
-                        <button id="btn-confirm-read" onclick="markAsRead()" class="w-full py-2 bg-gray-100 text-gray-600 rounded-lg text-sm font-bold hover:bg-green-100 hover:text-green-700 transition">
-                            我已閱讀完此部分內容
-                        </button>
-                    </div>
+                    <div id="study-notes" class="flex-grow overflow-y-auto space-y-4"></div>
+                    <button id="btn-confirm-read" onclick="markAsRead()" class="w-full py-3 mt-4 bg-white text-purple-600 rounded-xl font-bold border border-purple-200 hover:bg-purple-50 transition-colors">讀完加分 (+5%)</button>
                 </div>
             </div>
 
-            <!-- 右側：測驗區 -->
-            <div class="lg:col-span-2">
-                <div id="level-nav" class="grid grid-cols-3 gap-4 mb-6">
-                    <button id="nav-1" class="p-4 rounded-xl bg-white shadow font-bold text-gray-400 border-b-4 border-gray-200" disabled>LEVEL 1</button>
-                    <button id="nav-2" class="p-4 rounded-xl bg-white shadow font-bold text-gray-400 border-b-4 border-gray-200" disabled>LEVEL 2</button>
-                    <button id="nav-3" class="p-4 rounded-xl bg-white shadow font-bold text-gray-400 border-b-4 border-gray-200" disabled>LEVEL 3</button>
+            <!-- 右側：題目區 -->
+            <div class="lg:col-span-3">
+                <div id="level-nav" class="grid grid-cols-4 gap-2 mb-6 text-xs md:text-sm">
+                    <button id="nav-1" class="p-3 rounded-xl bg-white shadow-sm font-bold text-gray-300" disabled>1.原理</button>
+                    <button id="nav-2" class="p-3 rounded-xl bg-white shadow-sm font-bold text-gray-300" disabled>2.工具</button>
+                    <button id="nav-3" class="p-3 rounded-xl bg-white shadow-sm font-bold text-gray-300" disabled>3.健康</button>
+                    <button id="nav-4" class="p-3 rounded-xl bg-white shadow-sm font-bold text-gray-300" disabled>4.未來</button>
                 </div>
-
-                <div id="question-box" class="neon-card p-6 md:p-10 min-h-[450px] flex flex-col relative">
-                    <div id="rush-timer" class="absolute top-4 right-4 w-12 h-12 rounded-full border-4 border-orange-400 flex items-center justify-center font-bold text-orange-500 hidden">
-                        10
-                    </div>
-                    <div id="content-area">
-                        <!-- 題目動態插入 -->
-                    </div>
+                <div id="question-box" class="neon-card p-8 min-h-[480px] bg-white relative">
+                    <div id="rush-timer" class="absolute top-6 right-6 w-14 h-14 rounded-full border-4 border-orange-400 flex items-center justify-center font-bold text-orange-600 bg-orange-50 hidden">10</div>
+                    <div id="content-area"></div>
                 </div>
             </div>
         </div>
@@ -225,385 +173,195 @@
 
     <!-- 結算頁面 -->
     <div id="result-screen" class="max-w-md mx-auto neon-card p-8 mt-10 text-center hidden">
-        <div class="text-6xl mb-4">🏆</div>
-        <h2 class="text-3xl font-bold mb-2">學習完成！</h2>
-        <p class="text-gray-600 mb-6">成績已上傳至雲端系統</p>
-        <div class="bg-gray-50 p-6 rounded-xl space-y-4 mb-8">
-            <div class="flex justify-between border-b pb-2"><span>答對題數：</span><span id="final-correct" class="font-bold text-blue-600"></span></div>
-            <div class="flex justify-between border-b pb-2"><span>測驗原始得分：</span><span id="final-raw-score" class="font-bold text-blue-600"></span></div>
-            <div id="bonus-row" class="flex justify-between text-green-600 hidden">
-                <span>📚 學習加成 (閱讀重點)：</span><span class="font-bold">+5%</span>
-            </div>
-            <div class="flex justify-between text-xl pt-2"><span>最終總得分：</span><span id="final-score" class="font-bold text-purple-600"></span></div>
-            <div class="flex justify-between text-sm text-gray-500"><span>總花費時間：</span><span id="final-time"></span></div>
+        <div class="text-7xl mb-4">🏆</div>
+        <h2 class="text-3xl font-bold mb-2">挑戰完成！</h2>
+        <div class="bg-white p-6 rounded-2xl border border-purple-100 space-y-4 mb-8 text-left">
+            <div class="flex justify-between"><span>測驗得分：</span><span id="final-raw-score" class="font-bold"></span></div>
+            <div id="bonus-row" class="flex justify-between text-green-600 hidden"><span>📚 自學獎勵：</span><span class="font-bold">+5%</span></div>
+            <div class="flex justify-between text-2xl border-t pt-4 font-bold"><span>總成績：</span><span id="final-score" class="text-purple-600"></span></div>
         </div>
-        <button onclick="location.reload()" class="w-full btn-neon">重新挑戰</button>
+        <button onclick="location.reload()" class="w-full btn-neon">重新挑戰 🌟</button>
     </div>
 
     <script>
-        const _S = "MDQyNg=="; 
         const _A = (s) => btoa(encodeURIComponent(s));
+        const gasUrl = "https://script.google.com/macros/s/AKfycbzucU67nYMhc6hdjV2E1Z5mPckxnhHMmjegb0YHqbizKWMblQ8x6N7LeJfsPY_CK6Ddgg/exec";
 
         const levelsData = [
             {
-                level: 1,
-                title: "LEVEL 1：AI 基礎概念",
+                level: 1, title: "生成式 AI 原理",
+                notes: [
+                    { icon: "🧠", t: "預測技術", d: "LLM 透過計算機率，猜測下一個字該接什麼，拼湊出完整回答。" },
+                    { icon: "🎨", t: "數位藝術", d: "不只是聽指令，AI 能創造全新的文字、畫作與音樂。" }
+                ],
                 questions: [
-                    { type: 'tf', q: "人工智慧 (AI) 主要是讓電腦模仿人類的智慧，包含感知、學習與決策能力。", a: "VHJ1ZQ==" },
-                    { type: 'choice', q: "目前手機常見的「Siri」或「Google 助理」，屬於哪一類的 AI？", options: ["強人工智慧 (General AI)", "弱人工智慧 (Narrow AI)", "超級人工智慧 (Super AI)", "以上皆非"], a: "弱人工智慧 (Narrow AI)" },
-                    { type: 'drag', q: "請分類以下技術是否主要基於 AI 技術發展：", items: [
-                        { t: "影像辨識解鎖", cat: "YWk=" }, 
-                        { t: "紅綠燈定時器", cat: "bm90YWk=" }, 
-                        { t: "ChatGPT 生成文案", cat: "YWk=" },
-                        { t: "計算機開平方根", cat: "bm90YWk=" }
-                    ]}
+                    { type: 'tf', q: "大型語言模型 (LLM) 主要透過「預測技術」來產生回答。", a: "VHJ1ZQ==" },
+                    { type: 'choice', q: "下列何者是生成式 AI 的強項？", options: ["單純儲存資料", "創造全新的數位內容", "修理電腦硬體", "實體搬運貨物"], a: "創造全新的數位內容" },
+                    { type: 'choice', q: "AI 有時會產生錯誤的資訊（幻覺），這是因為：", options: ["AI 故意說謊", "AI 主要是計算機率而非理解真相", "電腦中毒了", "AI 太聰明在開玩笑"], a: "AI 主要是計算機率而非理解真相" }
                 ]
             },
             {
-                level: 2,
-                title: "LEVEL 2：AI 生活應用",
+                level: 2, title: "工具百寶箱",
+                notes: [
+                    { icon: "💬", t: "OpenAI ChatGPT", d: "萬能助手，適合撰寫、對話與邏輯推導。" },
+                    { icon: "🔍", t: "Google Gemini", d: "與 Google 服務整合，搜尋資料最即時。" }
+                ],
                 questions: [
-                    { type: 'choice', q: "AI 能夠辨識手寫數字或照片中的貓，是因為使用了哪種關鍵技術來從經驗中學習？", options: ["大數據搬運", "機器學習 (Machine Learning)", "人力雲端輸入", "區塊鏈加密"], a: "機器學習 (Machine Learning)" },
-                    { type: 'match', q: "將 AI 應用與其背後的技術功能正確配對：", pairs: [
-                        { l: "自駕車偵測障礙", r: "電腦視覺 (CV)", id: 1 },
-                        { l: "翻譯筆即時對話", r: "自然語言處理 (NLP)", id: 2 },
-                        { l: "智慧醫療篩選病灶", r: "醫學影像分析", id: 3 }
-                    ]}
+                    { type: 'match', q: "請配對 AI 工具與開發商：", pairs: [{ l: "ChatGPT", r: "OpenAI", id: 1 }, { l: "Gemini", r: "Google", id: 2 }] },
+                    { type: 'choice', q: "如果你想分析一份儲存在 Google 雲端的報表，哪個工具最適合？", options: ["ChatGPT", "Gemini", "Siri", "Excel 2003"], a: "Gemini" }
                 ]
             },
             {
-                level: 3,
-                title: "LEVEL 3：Deepfake 與倫理法律",
+                level: 3, title: "健康與生活",
+                notes: [
+                    { icon: "⌚", t: "智慧監測", d: "利用手環數據提供個人化運動建議與健康提醒。" },
+                    { icon: "🧸", t: "情緒陪伴", d: "AI 故事機能透過語音分析，幫助小孩表達情緒。" }
+                ],
                 questions: [
-                    { type: 'tf', q: "Deepfake 技術僅僅是軟體合成，只要沒有金錢詐騙，就不會觸法。", a: "RmFsc2U=" },
-                    { type: 'choice', q: "在使用 AI 生成圖像或文章時，哪一項是最需要注意的倫理問題？", options: ["電腦運算速度", "生成內容的智慧財產權與偏見", "顯示器螢幕解析度", "檔案儲存格式"], a: "生成內容的智慧財產權與偏見" },
-                    { type: 'rush', q: "【搶答】若在網路上看到名人說出違法言論，第一步應做什麼？", options: ["立即截圖轉貼分享", "查證是否為 Deepfake 變臉影片", "下載影片永久保存", "直接在底下留言開罵"], a: "查證是否為 Deepfake 變臉影片" }
+                    { type: 'choice', q: "智慧手環利用 AI 監測睡眠後，主要能提供什麼價值？", options: ["自動幫你起床", "提供個人化的健康建議", "幫你寫作業", "增加手機電量"], a: "提供個人化的健康建議" },
+                    { type: 'rush', q: "【搶答！】AI 心理輔導系統如何偵測學生情緒？", options: ["抽血檢查", "分析語音與文字內容的情緒特徵", "安裝監視器", "掃描大腦電波"], a: "分析語音與文字內容的情緒特徵" }
+                ]
+            },
+            {
+                level: 4, title: "未來職場與素養",
+                notes: [
+                    { icon: "⚖️", t: "AI 倫理", d: "使用 AI 內容時需標註來源，並注意版權問題。" },
+                    { icon: "🛡️", t: "資安意識", d: "不要隨意將個人隱私或機密文件上傳到公開的 AI 平台。" },
+                    { icon: "🚀", t: "人機協作", d: "未來人才不只要會用 AI，更要具備批判思考能力。" }
+                ],
+                questions: [
+                    { type: 'choice', q: "在職場上使用 AI 產出的圖片，最需要注意什麼？", options: ["圖片的色彩亮度", "圖片的檔案大小", "智慧財產權與版權聲明", "圖片的檔名"], a: "智慧財產權與版權聲明" },
+                    { type: 'tf', q: "為了保護隱私，我不應該把身分證號碼上傳給 AI 進行整理。", a: "VHJ1ZQ==" },
+                    { type: 'choice', q: "未來面對 AI 競爭，哪種能力「無法」輕易被取代？", options: ["單純的文字輸入", "重複性的資料整理", "跨領域的整合與溝通領導", "翻譯簡單詞彙"], a: "跨領域的整合與溝通領導" }
                 ]
             }
         ];
 
-        let currentUser = { class: '', no: '', name: '' };
-        let currentLevel = 0;
-        let currentQIdx = 0;
-        let score = 0;
-        let totalCorrect = 0;
-        let totalTime = 0;
-        let gameTimer;
-        let rushTimerInterval;
-        let gasUrl = "https://script.google.com/macros/s/AKfycbzucU67nYMhc6hdjV2E1Z5mPckxnhHMmjegb0YHqbizKWMblQ8x6N7LeJfsPY_CK6Ddgg/exec"; 
-
-        // 追蹤閱讀進度
-        let readProgress = [false, false, false];
+        let currentUser = {}, currentLevel = 0, currentQIdx = 0, score = 0, totalCorrect = 0, totalTime = 0;
+        let gameTimer, rushTimerInterval, readProgress = [false, false, false, false];
 
         function startApp() {
-            currentUser.class = document.getElementById('user-class').value;
-            currentUser.no = document.getElementById('user-no').value;
-            currentUser.name = document.getElementById('user-name').value;
-
-            if (!currentUser.class || !currentUser.no || !currentUser.name) {
-                alert("請填寫完整資訊！");
-                return;
-            }
-
+            currentUser = { 
+                class: document.getElementById('user-class').value, 
+                no: document.getElementById('user-no').value, 
+                name: document.getElementById('user-name').value 
+            };
+            if (!currentUser.class || !currentUser.no || !currentUser.name) return alert("請填寫完整的班級、座號與姓名！");
             document.getElementById('login-screen').classList.add('hidden');
             document.getElementById('game-container').classList.remove('hidden');
-            document.getElementById('display-info').innerText = `${currentUser.class} 班 ${currentUser.no}號 ${currentUser.name}`;
-            
-            startGlobalTimer();
+            document.getElementById('display-info').innerText = `${currentUser.class} 班 ${currentUser.no} 號 ${currentUser.name}`;
+            gameTimer = setInterval(() => { totalTime++; document.getElementById('timer-text').innerText = totalTime + 's'; }, 1000);
             loadLevel(0);
         }
 
-        function startGlobalTimer() {
-            gameTimer = setInterval(() => {
-                totalTime++;
-                document.getElementById('timer-text').innerText = totalTime + 's';
-            }, 1000);
-        }
-
         function loadLevel(idx) {
-            currentLevel = idx;
-            currentQIdx = 0;
-            updateNav();
-            loadQuestion();
-            updateNotes(idx);
+            currentLevel = idx; currentQIdx = 0; updateNav(); loadQuestion(); updateNotes();
         }
 
         function updateNav() {
-            for(let i=1; i<=3; i++) {
+            const totalQs = 10;
+            const currentTotalIdx = levelsData.slice(0, currentLevel).reduce((acc, l) => acc + l.questions.length, 0) + currentQIdx;
+            document.getElementById('energy-fill').style.width = (currentTotalIdx / totalQs * 100) + '%';
+            for(let i=1; i<=4; i++) {
                 const nav = document.getElementById(`nav-${i}`);
-                if (i-1 === currentLevel) {
-                    nav.classList.add('text-purple-600', 'border-purple-400');
-                    nav.classList.remove('text-gray-400');
-                } else if (i-1 < currentLevel) {
-                    nav.classList.add('text-green-500', 'border-green-300');
-                    nav.classList.remove('text-purple-600', 'text-gray-400');
-                }
-            }
-            const progress = (currentLevel / 3) * 100 + ((currentQIdx / levelsData[currentLevel].questions.length) * 33);
-            document.getElementById('energy-fill').style.width = progress + '%';
-        }
-
-        function updateNotes(levelIdx) {
-            const notesEl = document.getElementById('study-notes');
-            const statusEl = document.getElementById('read-status');
-            const btnEl = document.getElementById('btn-confirm-read');
-            
-            let content = "";
-            const isRead = readProgress[levelIdx];
-            
-            if(levelIdx === 0) {
-                content = `
-                    <div class="study-note ${isRead ? 'read' : ''}"><h4 class="font-bold">AI 基礎</h4><p class="text-sm">人工智慧旨在模仿人類智慧。目前我們使用的多為「弱 AI」，即專注於解決單一特定問題的技術。</p></div>
-                    <div class="study-note ${isRead ? 'read' : ''}"><h4 class="font-bold">分辨關鍵</h4><p class="text-sm">AI 與傳統程式最大的不同在於，AI 具有學習與優化的能力，而不僅僅是執行死板的預設指令。</p></div>
-                `;
-            } else if(levelIdx === 1) {
-                content = `
-                    <div class="study-note ${isRead ? 'read' : ''}"><h4 class="font-bold">機器學習 (ML)</h4><p class="text-sm">AI 的一個分支，透過數據訓練模型。例如：藉由數萬張照片讓模型學會分辨「貓」與「狗」。</p></div>
-                    <div class="study-note ${isRead ? 'read' : ''}"><h4 class="font-bold">應用領域</h4><p class="text-sm">電腦視覺 (辨識圖像)、自然語言處理 (語音翻譯) 與大數據推薦系統都是常見應用。</p></div>
-                `;
-            } else {
-                content = `
-                    <div class="study-note ${isRead ? 'read' : ''}"><h4 class="font-bold">Deepfake 技術</h4><p class="text-sm">利用深度學習合成偽造的臉部或聲音。這可能涉及妨害秘密、身份詐騙及性隱私權保護法。</p></div>
-                    <div class="study-note ${isRead ? 'read' : ''}"><h4 class="font-bold">倫理規範</h4><p class="text-sm">我們必須注意 AI 可能產生的算法偏見、隱私侵犯以及版權歸屬問題。</p></div>
-                `;
-            }
-            notesEl.innerHTML = content;
-            
-            if(isRead) {
-                statusEl.innerText = "閱讀完成 ✅";
-                statusEl.className = "text-xs bg-green-100 px-2 py-1 rounded text-green-600";
-                btnEl.disabled = true;
-                btnEl.innerText = "已完成閱讀";
-                btnEl.className = "w-full py-2 bg-green-50 text-green-500 rounded-lg text-sm font-bold cursor-default";
-            } else {
-                statusEl.innerText = "尚未閱讀";
-                statusEl.className = "text-xs bg-gray-100 px-2 py-1 rounded text-gray-400";
-                btnEl.disabled = false;
-                btnEl.innerText = "我已閱讀完畢 (加分項)";
-                btnEl.className = "w-full py-2 bg-purple-50 text-purple-600 rounded-lg text-sm font-bold hover:bg-purple-100 transition shadow-sm";
+                nav.className = `p-3 rounded-xl shadow-sm font-bold ${i-1 === currentLevel ? 'bg-purple-600 text-white scale-105' : i-1 < currentLevel ? 'bg-green-500 text-white' : 'bg-white text-gray-300'}`;
             }
         }
 
-        function markAsRead() {
-            readProgress[currentLevel] = true;
-            updateNotes(currentLevel);
+        function updateNotes() {
+            const container = document.getElementById('study-notes');
+            const isRead = readProgress[currentLevel];
+            container.innerHTML = levelsData[currentLevel].notes.map(n => `
+                <div class="study-note ${isRead ? 'read' : ''}">
+                    <div class="icon-box">${n.icon}</div>
+                    <div><h4 class="font-bold text-sm text-purple-800">${n.t}</h4><p class="text-[11px] text-gray-500 mt-1">${n.d}</p></div>
+                </div>
+            `).join('');
+            const btn = document.getElementById('btn-confirm-read');
+            btn.disabled = isRead; btn.innerText = isRead ? "已掌握 ✅" : "我讀完了！(+5%)";
+            btn.className = isRead ? "w-full py-3 mt-4 bg-gray-100 text-gray-400 rounded-xl font-bold border border-gray-200 cursor-not-allowed" : "w-full py-3 mt-4 bg-white text-purple-600 rounded-xl font-bold border border-purple-200 hover:bg-purple-50 transition-colors";
         }
+
+        function markAsRead() { readProgress[currentLevel] = true; updateNotes(); }
 
         function loadQuestion() {
-            const level = levelsData[currentLevel];
-            const q = level.questions[currentQIdx];
+            const q = levelsData[currentLevel].questions[currentQIdx];
             const area = document.getElementById('content-area');
             const box = document.getElementById('question-box');
-            const rushTimerEl = document.getElementById('rush-timer');
-            
             box.classList.remove('correct-glow', 'wrong-shake');
-            rushTimerEl.classList.add('hidden');
+            document.getElementById('rush-timer').classList.add('hidden');
             clearInterval(rushTimerInterval);
 
-            let html = `<h2 class="text-xl font-bold mb-4 text-gray-700">${level.title} - 第 ${currentQIdx + 1} 題</h2>`;
-            html += `<p class="text-lg mb-6 leading-relaxed">${q.q}</p>`;
+            let html = `<div class="mb-6"><span class="bg-purple-100 text-purple-600 px-3 py-1 rounded-full text-xs font-bold mb-2">第 ${totalCorrect + 1} 題 / 共 10 題</span><h2 class="text-2xl font-bold text-gray-800 mt-2">${q.q}</h2></div>`;
 
             if (q.type === 'tf') {
-                html += `
-                    <div class="flex space-x-4">
-                        <button onclick="checkAnswer('True')" class="flex-1 py-6 rounded-xl border-2 hover:bg-blue-50 transition font-bold text-3xl">⭕</button>
-                        <button onclick="checkAnswer('False')" class="flex-1 py-6 rounded-xl border-2 hover:bg-red-50 transition font-bold text-3xl">❌</button>
-                    </div>
-                `;
+                html += `<div class="grid grid-cols-2 gap-6 mt-8"><button onclick="checkAns('True')" class="py-12 border-2 rounded-3xl text-6xl bg-white hover:bg-blue-50 transition-all shadow-sm active:scale-95">⭕</button><button onclick="checkAns('False')" class="py-12 border-2 rounded-3xl text-6xl bg-white hover:bg-red-50 transition-all shadow-sm active:scale-95">❌</button></div>`;
             } else if (q.type === 'choice' || q.type === 'rush') {
-                if (q.type === 'rush') {
-                    rushTimerEl.classList.remove('hidden');
-                    startRushTimer(10);
-                }
-                html += `<div class="grid grid-cols-1 gap-3">`;
-                q.options.forEach(opt => {
-                    html += `<button onclick="checkAnswer('${opt}')" class="w-full py-3 px-4 text-left rounded-lg border-2 hover:border-purple-300 hover:bg-purple-50 transition text-sm md:text-base">${opt}</button>`;
-                });
-                html += `</div>`;
-            } else if (q.type === 'drag') {
-                html += `
-                    <div class="space-y-4">
-                        <div class="flex flex-wrap gap-2 mb-4" id="drag-items">
-                            ${q.items.map((it, i) => `<div draggable="true" ondragstart="onDragStart(event, ${i})" class="bg-white border-2 border-blue-200 p-2 rounded cursor-move shadow-sm text-sm">${it.t}</div>`).join('')}
-                        </div>
-                        <div class="grid grid-cols-2 gap-4">
-                            <div class="drop-zone p-4" ondragover="onDragOver(event)" ondrop="onDrop(event, 'YWk=')"><p class="text-xs text-gray-400 mb-2">基於 AI 技術</p></div>
-                            <div class="drop-zone p-4" ondragover="onDragOver(event)" ondrop="onDrop(event, 'bm90YWk=')"><p class="text-xs text-gray-400 mb-2">傳統程式/計算</p></div>
-                        </div>
-                        <button onclick="checkDragAnswer()" class="btn-neon w-full mt-4">確認分類</button>
-                    </div>
-                `;
+                if(q.type === 'rush') { document.getElementById('rush-timer').classList.remove('hidden'); startRush(10); }
+                html += `<div class="space-y-4">${q.options.map(o => `<button onclick="checkAns('${o}')" class="w-full p-5 text-left border-2 rounded-2xl bg-white hover:bg-purple-50 hover:border-purple-400 transition-all font-bold text-gray-700 active:scale-[0.98] shadow-sm">${o}</button>`).join('')}</div>`;
             } else if (q.type === 'match') {
-                html += `<p class="text-sm text-gray-400 mb-4">點擊左側再點擊右側來配對：</p>
-                    <div class="flex justify-between space-x-4">
-                        <div class="flex-1 space-y-2">
-                            ${q.pairs.map(p => `<button id="l-${p.id}" onclick="selectMatch('l', ${p.id})" class="w-full p-2 border rounded bg-white text-xs text-left">${p.l}</button>`).join('')}
-                        </div>
-                        <div class="flex-1 space-y-2">
-                            ${q.pairs.sort(() => Math.random()-0.5).map(p => `<button id="r-${p.id}" onclick="selectMatch('r', ${p.id})" class="w-full p-2 border rounded bg-white text-xs text-left">${p.r}</button>`).join('')}
-                        </div>
+                html += `
+                    <p class="text-sm text-gray-500 mb-4">請點選左側工具再點選右側開發商進行配對：</p>
+                    <div class="flex gap-4">
+                        <div class="flex-1 space-y-3">${levelsData[currentLevel].questions[currentQIdx].pairs.map((p,i)=>`<button id="l-${p.id}" onclick="selM('l',${p.id})" class="w-full p-4 border rounded-xl bg-gray-50 font-bold transition-all shadow-sm">${p.l}</button>`).join('')}</div>
+                        <div class="flex-1 space-y-3">${[{r:'Google',id:2},{r:'OpenAI',id:1}].map((p,i)=>`<button id="r-${p.id}" onclick="selM('r',${p.id})" class="w-full p-4 border rounded-xl bg-gray-50 font-bold transition-all shadow-sm">${p.r}</button>`).join('')}</div>
                     </div>
-                    <button onclick="checkMatchAnswer()" class="btn-neon w-full mt-4">完成配對</button>
+                    <button id="ms" onclick="checkM()" class="btn-neon w-full mt-8 opacity-50 cursor-not-allowed" disabled>確認配對任務</button>
                 `;
             }
-
             area.innerHTML = html;
         }
 
-        function startRushTimer(sec) {
-            let left = sec;
-            const el = document.getElementById('rush-timer');
-            el.innerText = left;
-            rushTimerInterval = setInterval(() => {
-                left--;
-                el.innerText = left;
-                if (left <= 0) {
-                    clearInterval(rushTimerInterval);
-                    handleAnswer(false);
-                }
+        function startRush(s) {
+            let left = s; document.getElementById('rush-timer').innerText = left;
+            rushTimerInterval = setInterval(() => { 
+                left--; document.getElementById('rush-timer').innerText = left; 
+                if(left <= 3) document.getElementById('rush-timer').classList.add('animate-pulse', 'text-red-600');
+                if(left<=0) { clearInterval(rushTimerInterval); handleAns(false); } 
             }, 1000);
         }
 
-        let draggedItemIdx = null;
-        window.onDragStart = (e, idx) => { draggedItemIdx = idx; };
-        window.onDragOver = (e) => { e.preventDefault(); e.currentTarget.classList.add('active'); };
-        window.onDrop = (e, cat) => {
-            e.preventDefault();
-            e.currentTarget.classList.remove('active');
-            const level = levelsData[currentLevel];
-            const q = level.questions[currentQIdx];
-            q.items[draggedItemIdx].userCat = cat;
-            const itemEl = document.querySelector(`[ondragstart="onDragStart(event, ${draggedItemIdx})"]`);
-            e.currentTarget.appendChild(itemEl);
+        let sL, sR, mtch = [];
+        window.selM = (side, id) => {
+            if(side==='l') { sL=id; document.querySelectorAll("[id^='l-']").forEach(b=>b.className="w-full p-4 border rounded-xl bg-gray-50 font-bold shadow-sm"); document.getElementById(`l-${id}`).className="w-full p-4 border-2 border-purple-400 bg-purple-50 font-bold shadow-sm"; }
+            else { sR=id; document.querySelectorAll("[id^='r-']").forEach(b=>b.className="w-full p-4 border rounded-xl bg-gray-50 font-bold shadow-sm"); document.getElementById(`r-${id}`).className="w-full p-4 border-2 border-purple-400 bg-purple-50 font-bold shadow-sm"; }
+            if(sL && sR) { 
+                mtch = mtch.filter(m=>m.l!==sL); mtch.push({l:sL, r:sR}); 
+                document.getElementById(`l-${sL}`).classList.add('border-green-400','bg-green-50');
+                document.getElementById(`r-${sR}`).classList.add('border-green-400','bg-green-50');
+                sL=sR=null; 
+            }
+            if(mtch.length===2) { const b=document.getElementById('ms'); b.disabled=false; b.className="btn-neon w-full mt-8"; b.innerText="送出配對結果"; }
         };
+        function checkM() { handleAns(mtch.every(m => m.l === m.r)); mtch=[]; }
 
-        function checkDragAnswer() {
-            const q = levelsData[currentLevel].questions[currentQIdx];
-            const isAllCorrect = q.items.every(it => it.cat === it.userCat);
-            handleAnswer(isAllCorrect);
-        }
+        function checkAns(ans) { clearInterval(rushTimerInterval); const q = levelsData[currentLevel].questions[currentQIdx]; handleAns(q.type === 'tf' ? _A(ans) === q.a : ans === q.a); }
 
-        let selectedL = null;
-        let selectedR = null;
-        let userMatches = [];
-        window.selectMatch = (side, id) => {
-            if(side === 'l') {
-                document.querySelectorAll("[id^='l-']").forEach(b => b.classList.remove('bg-purple-100'));
-                selectedL = id;
-                document.getElementById(`l-${id}`).classList.add('bg-purple-100');
-            }
-            if(side === 'r') {
-                document.querySelectorAll("[id^='r-']").forEach(b => b.classList.remove('bg-purple-100'));
-                selectedR = id;
-                document.getElementById(`r-${id}`).classList.add('bg-purple-100');
-            }
-            if(selectedL && selectedR) {
-                userMatches = userMatches.filter(m => m.l !== selectedL);
-                userMatches.push({l: selectedL, r: selectedR});
-                document.getElementById(`l-${selectedL}`).classList.remove('bg-purple-100');
-                document.getElementById(`r-${selectedR}`).classList.remove('bg-purple-100');
-                document.getElementById(`l-${selectedL}`).classList.add('bg-green-100');
-                document.getElementById(`r-${selectedR}`).classList.add('bg-green-100');
-                selectedL = selectedR = null;
-            }
-        };
-
-        function checkMatchAnswer() {
-            const q = levelsData[currentLevel].questions[currentQIdx];
-            const correctCount = userMatches.filter(m => m.l === m.r).length;
-            handleAnswer(correctCount === q.pairs.length);
-            userMatches = [];
-        }
-
-        function checkAnswer(userAns) {
-            clearInterval(rushTimerInterval);
-            const q = levelsData[currentLevel].questions[currentQIdx];
-            let isCorrect = (q.type === 'tf') ? (_A(userAns) === q.a) : (userAns === q.a);
-            handleAnswer(isCorrect);
-        }
-
-        function handleAnswer(isCorrect) {
+        function handleAns(isC) {
             const box = document.getElementById('question-box');
-            if (isCorrect) {
-                box.classList.add('correct-glow');
-                score += 10;
+            if(isC) { box.classList.add('correct-glow'); score += 10; document.getElementById('score-text').innerText = score; } 
+            else { box.classList.add('wrong-shake'); }
+            setTimeout(() => {
                 totalCorrect++;
-                document.getElementById('score-text').innerText = score;
-            } else {
-                box.classList.add('wrong-shake');
-            }
-            setTimeout(() => { nextQuestion(); }, 800);
+                currentQIdx++;
+                if(currentQIdx >= levelsData[currentLevel].questions.length) {
+                    currentLevel++;
+                    if(currentLevel >= levelsData.length) finish();
+                    else loadLevel(currentLevel);
+                } else { updateNav(); loadQuestion(); }
+            }, 800);
         }
 
-        function nextQuestion() {
-            currentQIdx++;
-            if (currentQIdx >= levelsData[currentLevel].questions.length) {
-                currentLevel++;
-                if (currentLevel >= levelsData.length) {
-                    finishGame();
-                } else {
-                    loadLevel(currentLevel);
-                }
-            } else {
-                updateNav();
-                loadQuestion();
-            }
-        }
-
-        function finishGame() {
-            clearInterval(gameTimer);
-            document.getElementById('game-container').classList.add('hidden');
+        function finish() {
+            clearInterval(gameTimer); document.getElementById('game-container').classList.add('hidden');
             document.getElementById('result-screen').classList.remove('hidden');
+            const allRead = readProgress.every(r=>r);
+            let final = score; if(allRead) { final = Math.min(100, Math.round(score * 1.05)); document.getElementById('bonus-row').classList.remove('hidden'); }
+            document.getElementById('final-raw-score').innerText = score;
+            document.getElementById('final-score').innerText = final;
             
-            const allRead = readProgress.every(r => r === true);
-            let finalScore = score;
-            if (allRead) {
-                finalScore = Math.round(score * 1.05 * 10) / 10;
-                document.getElementById('bonus-row').classList.remove('hidden');
-            }
-
-            document.getElementById('final-correct').innerText = totalCorrect + " 題";
-            document.getElementById('final-raw-score').innerText = score + " 分";
-            document.getElementById('final-score').innerText = finalScore + " 分";
-            document.getElementById('final-time').innerText = totalTime + " 秒";
-            
-            uploadData(finalScore, allRead);
-        }
-
-        function showAdminLogin() { document.getElementById('admin-login').classList.remove('hidden'); }
-        function hideAdminLogin() { document.getElementById('admin-login').classList.add('hidden'); }
-        function checkAdmin() {
-            const pass = document.getElementById('admin-pass').value;
-            if (_A(pass) === _S) {
-                window.open("https://docs.google.com/spreadsheets/d/19rzBcUZLWQBexhKsqvww-oxjMZbgQBFpqoUdliGvjJM/edit", "_blank");
-            } else {
-                alert("密碼錯誤！");
-            }
-        }
-
-        async function uploadData(finalScore, isBonus) {
-            const payload = {
-                class: currentUser.class,
-                no: currentUser.no,
-                name: currentUser.name,
-                level: "Completed",
-                correct: totalCorrect,
-                rawScore: score,
-                finalScore: finalScore,
-                studyBonus: isBonus ? "Yes" : "No",
-                time: totalTime,
-                date: new Date().toLocaleString()
-            };
-
-            try {
-                await fetch(gasUrl, {
-                    method: 'POST',
-                    mode: 'no-cors',
-                    cache: 'no-cache',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
-                });
-            } catch (e) { console.error("Upload error", e); }
+            const payload = { class: currentUser.class, no: currentUser.no, name: currentUser.name, rawScore: score, finalScore: final, bonus: allRead ? "Yes" : "No", time: totalTime, date: new Date().toLocaleString() };
+            fetch(gasUrl, { method: 'POST', mode: 'no-cors', body: JSON.stringify(payload) }).catch(e => console.log(e));
         }
     </script>
 </body>
