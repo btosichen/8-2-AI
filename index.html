@@ -80,6 +80,23 @@
             align-items: center;
         }
 
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+            border-radius: 12px;
+            margin-top: 10px;
+        }
+
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
         @keyframes shake {
             0%, 100% { transform: translateX(0); }
             25% { transform: translateX(-5px); }
@@ -103,8 +120,8 @@
 
     <!-- 登入頁面 -->
     <div id="login-screen" class="max-w-md mx-auto neon-card p-8 mt-10">
-        <h1 class="text-3xl font-bold text-center mb-2 text-gray-800">🤖 AI 崛起：未來世界</h1>
-        <p class="text-center text-gray-500 mb-8 text-sm">✨ 挑戰 10 題獲得滿分 100！ ✨</p>
+        <h1 class="text-3xl font-bold text-center mb-2 text-gray-800">🤖 AI 崛起：未來新世界</h1>
+        <p class="text-center text-gray-500 mb-8 text-sm">✨ 挑戰 20 題獲得滿分 100！ ✨</p>
         <div class="space-y-4">
             <select id="user-class" class="w-full p-3 rounded-lg border bg-white">
                 <option value="">選擇班級</option>
@@ -117,7 +134,7 @@
             </select>
             <input type="number" id="user-no" placeholder="座號" class="w-full p-3 rounded-lg border focus:ring-2 focus:ring-purple-400">
             <input type="text" id="user-name" placeholder="姓名" class="w-full p-3 rounded-lg border focus:ring-2 focus:ring-purple-400">
-            <button onclick="startApp()" class="w-full btn-neon mt-4">進入挑戰 🚀</button>
+            <button onclick="startApp()" class="w-full btn-neon mt-4">開始學習與測驗 🚀</button>
         </div>
     </div>
 
@@ -143,25 +160,25 @@
         </div>
 
         <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
-            <!-- 左側：教材重點 -->
+            <!-- 左側：教材重點與影片 -->
             <div class="lg:col-span-1">
                 <div class="neon-card p-5 min-h-[550px] bg-gray-50/50 flex flex-col">
                     <h3 class="font-bold text-lg mb-4 text-purple-700 border-b pb-2 flex justify-between">
-                        <span>📖 重點筆記</span>
-                        <span id="read-status" class="text-[10px] bg-gray-200 px-2 py-0.5 rounded-full">未讀取</span>
+                        <span>📖 重點與影片</span>
+                        <span id="read-status" class="text-[10px] bg-gray-200 px-2 py-0.5 rounded-full">未完成</span>
                     </h3>
                     <div id="study-notes" class="flex-grow overflow-y-auto space-y-4"></div>
-                    <button id="btn-confirm-read" onclick="markAsRead()" class="w-full py-3 mt-4 bg-white text-purple-600 rounded-xl font-bold border border-purple-200 hover:bg-purple-50 transition-colors">讀完加分 (+5%)</button>
+                    <button id="btn-confirm-read" onclick="markAsRead()" class="w-full py-3 mt-4 bg-white text-purple-600 rounded-xl font-bold border border-purple-200 hover:bg-purple-50 transition-colors">讀完/看加分 (+5%)</button>
                 </div>
             </div>
 
             <!-- 右側：題目區 -->
             <div class="lg:col-span-3">
                 <div id="level-nav" class="grid grid-cols-4 gap-2 mb-6 text-xs md:text-sm">
-                    <button id="nav-1" class="p-3 rounded-xl bg-white shadow-sm font-bold text-gray-300" disabled>1.原理</button>
-                    <button id="nav-2" class="p-3 rounded-xl bg-white shadow-sm font-bold text-gray-300" disabled>2.工具</button>
-                    <button id="nav-3" class="p-3 rounded-xl bg-white shadow-sm font-bold text-gray-300" disabled>3.健康</button>
-                    <button id="nav-4" class="p-3 rounded-xl bg-white shadow-sm font-bold text-gray-300" disabled>4.未來</button>
+                    <button id="nav-1" class="p-3 rounded-xl bg-white shadow-sm font-bold text-gray-300" disabled>1.原理史</button>
+                    <button id="nav-2" class="p-3 rounded-xl bg-white shadow-sm font-bold text-gray-300" disabled>2.法律倫理</button>
+                    <button id="nav-3" class="p-3 rounded-xl bg-white shadow-sm font-bold text-gray-300" disabled>3.領域應用</button>
+                    <button id="nav-4" class="p-3 rounded-xl bg-white shadow-sm font-bold text-gray-300" disabled>4.未來趨勢</button>
                 </div>
                 <div id="question-box" class="neon-card p-8 min-h-[480px] bg-white relative">
                     <div id="rush-timer" class="absolute top-6 right-6 w-14 h-14 rounded-full border-4 border-orange-400 flex items-center justify-center font-bold text-orange-600 bg-orange-50 hidden">10</div>
@@ -174,7 +191,7 @@
     <!-- 結算頁面 -->
     <div id="result-screen" class="max-w-md mx-auto neon-card p-8 mt-10 text-center hidden">
         <div class="text-7xl mb-4">🏆</div>
-        <h2 class="text-3xl font-bold mb-2">挑戰完成！</h2>
+        <h2 class="text-3xl font-bold mb-2">任務達成！</h2>
         <div class="bg-white p-6 rounded-2xl border border-purple-100 space-y-4 mb-8 text-left">
             <div class="flex justify-between"><span>測驗得分：</span><span id="final-raw-score" class="font-bold"></span></div>
             <div id="bonus-row" class="flex justify-between text-green-600 hidden"><span>📚 自學獎勵：</span><span class="font-bold">+5%</span></div>
@@ -189,50 +206,59 @@
 
         const levelsData = [
             {
-                level: 1, title: "生成式 AI 原理",
+                level: 1, title: "AI 原理與發展史",
                 notes: [
-                    { icon: "🧠", t: "預測技術", d: "LLM 透過計算機率，猜測下一個字該接什麼，拼湊出完整回答。" },
-                    { icon: "🎨", t: "數位藝術", d: "不只是聽指令，AI 能創造全新的文字、畫作與音樂。" }
+                    { icon: "🎞️", t: "影片：AI 人工智慧崛起", video: "rSajTSVvPYA", q: "思考：AI 的發展從簡單的規則運算到現在的深度學習，最大的改變是什麼？" },
+                    { icon: "🧠", t: "LLM 核心", d: "大型語言模型透過學習大量文本，預測下一個最機率出現的字。" }
                 ],
                 questions: [
-                    { type: 'tf', q: "大型語言模型 (LLM) 主要透過「預測技術」來產生回答。", a: "VHJ1ZQ==" },
-                    { type: 'choice', q: "下列何者是生成式 AI 的強項？", options: ["單純儲存資料", "創造全新的數位內容", "修理電腦硬體", "實體搬運貨物"], a: "創造全新的數位內容" },
+                    { type: 'tf', q: "AI 發展史上，深度學習是讓 AI 能夠自主從數據中學習規律的關鍵。", a: "VHJ1ZQ==" },
+                    { type: 'choice', q: "根據影片，早期 AI (如深藍) 主要是靠什麼擊敗人類棋手？", options: ["強大的直覺", "預設的龐大規則與運算能力", "與人類一樣的思考方式", "網路搜尋答案"], a: "預設的龐大規則與運算能力" },
+                    { type: 'choice', q: "下列何者是生成式 AI 的強項？", options: ["單純儲存資料", "創造全新的數位內容", "修理電腦硬體", "完全理解人類情感"], a: "創造全新的數位內容" },
+                    { type: 'tf', q: "LLM 是透過『預測技術』來產生回答，而非真正理解語意。", a: "VHJ1ZQ==" },
                     { type: 'choice', q: "AI 有時會產生錯誤的資訊（幻覺），這是因為：", options: ["AI 故意說謊", "AI 主要是計算機率而非理解真相", "電腦中毒了", "AI 太聰明在開玩笑"], a: "AI 主要是計算機率而非理解真相" }
                 ]
             },
             {
-                level: 2, title: "工具百寶箱",
+                level: 2, title: "法律與倫理議題",
                 notes: [
-                    { icon: "💬", t: "OpenAI ChatGPT", d: "萬能助手，適合撰寫、對話與邏輯推導。" },
-                    { icon: "🔍", t: "Google Gemini", d: "與 Google 服務整合，搜尋資料最即時。" }
+                    { icon: "🎥", t: "影片：生成式 AI 與著作權", video: "N0mD0F_i0m8", q: "思考：如果你使用 AI 生成一幅畫，這幅畫的著作權應該歸誰？" },
+                    { icon: "⚖️", t: "法律原則", d: "網路世界仍適用現實法律，侵犯隱私或版權需負法律責任。" }
                 ],
                 questions: [
+                    { type: 'tf', q: "網路世界是一個完全自由的地帶，現實法律在網路上並不適用。", a: "RmFsc2U=" },
+                    { type: 'choice', q: "使用 AI 生成內容時，為了避免版權爭議，最合適的做法是？", options: ["宣稱是自己親手畫的", "註明是由 AI 生成並標註來源", "直接拿去商業販售", "不告訴任何人"], a: "註明是由 AI 生成並標註來源" },
+                    { type: 'choice', q: "上傳個人身分資訊給 AI 平台可能會導致什麼風險？", options: ["讓 AI 變聰明", "個資外洩與隱私受損", "電腦會當機", "AI 會愛上你"], a: "個資外洩與隱私受損" },
+                    { type: 'tf', q: "訓練 AI 模型所使用的數據，如果未經授權使用他人版權作品，可能會引發法律糾紛。", a: "VHJ1ZQ==" },
+                    { type: 'choice', q: "關於 AI 生成內容的著作權，台灣目前主流看法通常傾向：", options: ["完全屬於 AI", "AI 使用者擁有完整版權", "需視人類參與創作程度而定", "根本不重要"], a: "需視人類參與創作程度而定" }
+                ]
+            },
+            {
+                level: 3, title: "各領域 AI 應用",
+                notes: [
+                    { icon: "🏥", t: "影片：AI 在醫療的機會", video: "N-CUqF7Xfww", q: "思考：AI 判讀醫學影像比人類精準後，醫生的角色會如何轉變？" },
+                    { icon: "🚗", t: "生活應用", d: "AI 改善了交通效率（如導航）與健康管理（如智慧手環）。" }
+                ],
+                questions: [
+                    { type: 'choice', q: "AI 在醫療影像（如 X 光片）判讀上的主要優勢是什麼？", options: ["比醫生更親切", "能 24 小時不休息且精準篩選異常", "能直接開刀", "完全不需要醫生參與"], a: "能 24 小時不休息且精準篩選異常" },
+                    { type: 'choice', q: "智慧手環利用 AI 監測睡眠後，主要能提供什麼價值？", options: ["自動幫你起床", "提供個人化的健康建議", "幫你寫作業", "增加手機電量"], a: "提供個人化的健康建議" },
+                    { type: 'rush', q: "【搶答！】AI 心理輔導系統如何偵測學生情緒？", options: ["抽血檢查", "分析語音與文字內容的情緒特徵", "安裝監視器", "掃描大腦電波"], a: "分析語音與文字內容的情緒特徵" },
                     { type: 'match', q: "請配對 AI 工具與開發商：", pairs: [{ l: "ChatGPT", r: "OpenAI", id: 1 }, { l: "Gemini", r: "Google", id: 2 }] },
                     { type: 'choice', q: "如果你想分析一份儲存在 Google 雲端的報表，哪個工具最適合？", options: ["ChatGPT", "Gemini", "Siri", "Excel 2003"], a: "Gemini" }
                 ]
             },
             {
-                level: 3, title: "健康與生活",
+                level: 4, title: "未來趨勢與素養",
                 notes: [
-                    { icon: "⌚", t: "智慧監測", d: "利用手環數據提供個人化運動建議與健康提醒。" },
-                    { icon: "🧸", t: "情緒陪伴", d: "AI 故事機能透過語音分析，幫助小孩表達情緒。" }
+                    { icon: "💡", t: "影片：AI 與未來的趨勢", video: "7-vnQlakK_4", q: "思考：未來很多重複性工作會消失，你認為自己該強化哪種能力？" },
+                    { icon: "🚀", t: "核心能力", d: "批判性思考與解決問題的能力是 AI 無法取代的關鍵。" }
                 ],
                 questions: [
-                    { type: 'choice', q: "智慧手環利用 AI 監測睡眠後，主要能提供什麼價值？", options: ["自動幫你起床", "提供個人化的健康建議", "幫你寫作業", "增加手機電量"], a: "提供個人化的健康建議" },
-                    { type: 'rush', q: "【搶答！】AI 心理輔導系統如何偵測學生情緒？", options: ["抽血檢查", "分析語音與文字內容的情緒特徵", "安裝監視器", "掃描大腦電波"], a: "分析語音與文字內容的情緒特徵" }
-                ]
-            },
-            {
-                level: 4, title: "未來職場與素養",
-                notes: [
-                    { icon: "⚖️", t: "AI 倫理", d: "使用 AI 內容時需標註來源，並注意版權問題。" },
-                    { icon: "🛡️", t: "資安意識", d: "不要隨意將個人隱私或機密文件上傳到公開的 AI 平台。" },
-                    { icon: "🚀", t: "人機協作", d: "未來人才不只要會用 AI，更要具備批判思考能力。" }
-                ],
-                questions: [
-                    { type: 'choice', q: "在職場上使用 AI 產出的圖片，最需要注意什麼？", options: ["圖片的色彩亮度", "圖片的檔案大小", "智慧財產權與版權聲明", "圖片的檔名"], a: "智慧財產權與版權聲明" },
-                    { type: 'tf', q: "為了保護隱私，我不應該把身分證號碼上傳給 AI 進行整理。", a: "VHJ1ZQ==" },
-                    { type: 'choice', q: "未來面對 AI 競爭，哪種能力「無法」輕易被取代？", options: ["單純的文字輸入", "重複性的資料整理", "跨領域的整合與溝通領導", "翻譯簡單詞彙"], a: "跨領域的整合與溝通領導" }
+                    { type: 'choice', q: "根據未來趨勢影片，AI 對工作最大的衝擊是？", options: ["取代所有人類工作", "將重複性高且邏輯固定的工作自動化", "讓人們不用工作就有薪水", "讓所有人都變成工程師"], a: "將重複性高且邏輯固定的工作自動化" },
+                    { type: 'tf', q: "面對 AI，我們應該具備『批判性思考』來判斷 AI 內容的真偽。", a: "VHJ1ZQ==" },
+                    { type: 'choice', q: "未來人才不只要會用 AI，更要具備哪種「軟實力」？", options: ["打字速度", "與人溝通及團隊領導", "背誦大量資料", "電腦開機速度"], a: "與人溝通及團隊領導" },
+                    { type: 'choice', q: "哪種行為能體現良好的 AI 素養？", options: ["完全不使用 AI", "盲目相信 AI 的答案", "查證 AI 提供的來源與正確性", "讓 AI 幫我做所有決策"], a: "查證 AI 提供的來源與正確性" },
+                    { type: 'tf', q: "人機協作 (Human-AI Collaboration) 將是未來職場的核心模式。", a: "VHJ1ZQ==" }
                 ]
             }
         ];
@@ -259,7 +285,7 @@
         }
 
         function updateNav() {
-            const totalQs = 10;
+            const totalQs = 20;
             const currentTotalIdx = levelsData.slice(0, currentLevel).reduce((acc, l) => acc + l.questions.length, 0) + currentQIdx;
             document.getElementById('energy-fill').style.width = (currentTotalIdx / totalQs * 100) + '%';
             for(let i=1; i<=4; i++) {
@@ -274,11 +300,20 @@
             container.innerHTML = levelsData[currentLevel].notes.map(n => `
                 <div class="study-note ${isRead ? 'read' : ''}">
                     <div class="icon-box">${n.icon}</div>
-                    <div><h4 class="font-bold text-sm text-purple-800">${n.t}</h4><p class="text-[11px] text-gray-500 mt-1">${n.d}</p></div>
+                    <div class="w-full">
+                        <h4 class="font-bold text-sm text-purple-800">${n.t}</h4>
+                        ${n.d ? `<p class="text-[11px] text-gray-500 mt-1">${n.d}</p>` : ''}
+                        ${n.video ? `
+                            <div class="video-container">
+                                <iframe src="https://www.youtube.com/embed/${n.video}" frameborder="0" allowfullscreen></iframe>
+                            </div>
+                            <p class="text-[10px] text-orange-500 font-bold mt-2">${n.q}</p>
+                        ` : ''}
+                    </div>
                 </div>
             `).join('');
             const btn = document.getElementById('btn-confirm-read');
-            btn.disabled = isRead; btn.innerText = isRead ? "已掌握 ✅" : "我讀完了！(+5%)";
+            btn.disabled = isRead; btn.innerText = isRead ? "已掌握 ✅" : "已學習完畢！(+5%)";
             btn.className = isRead ? "w-full py-3 mt-4 bg-gray-100 text-gray-400 rounded-xl font-bold border border-gray-200 cursor-not-allowed" : "w-full py-3 mt-4 bg-white text-purple-600 rounded-xl font-bold border border-purple-200 hover:bg-purple-50 transition-colors";
         }
 
@@ -292,13 +327,13 @@
             document.getElementById('rush-timer').classList.add('hidden');
             clearInterval(rushTimerInterval);
 
-            let html = `<div class="mb-6"><span class="bg-purple-100 text-purple-600 px-3 py-1 rounded-full text-xs font-bold mb-2">第 ${totalCorrect + 1} 題 / 共 10 題</span><h2 class="text-2xl font-bold text-gray-800 mt-2">${q.q}</h2></div>`;
+            let html = `<div class="mb-6"><span class="bg-purple-100 text-purple-600 px-3 py-1 rounded-full text-xs font-bold mb-2">第 ${totalCorrect + 1} 題 / 共 20 題</span><h2 class="text-xl md:text-2xl font-bold text-gray-800 mt-2">${q.q}</h2></div>`;
 
             if (q.type === 'tf') {
                 html += `<div class="grid grid-cols-2 gap-6 mt-8"><button onclick="checkAns('True')" class="py-12 border-2 rounded-3xl text-6xl bg-white hover:bg-blue-50 transition-all shadow-sm active:scale-95">⭕</button><button onclick="checkAns('False')" class="py-12 border-2 rounded-3xl text-6xl bg-white hover:bg-red-50 transition-all shadow-sm active:scale-95">❌</button></div>`;
             } else if (q.type === 'choice' || q.type === 'rush') {
                 if(q.type === 'rush') { document.getElementById('rush-timer').classList.remove('hidden'); startRush(10); }
-                html += `<div class="space-y-4">${q.options.map(o => `<button onclick="checkAns('${o}')" class="w-full p-5 text-left border-2 rounded-2xl bg-white hover:bg-purple-50 hover:border-purple-400 transition-all font-bold text-gray-700 active:scale-[0.98] shadow-sm">${o}</button>`).join('')}</div>`;
+                html += `<div class="space-y-3">${q.options.map(o => `<button onclick="checkAns('${o}')" class="w-full p-4 text-left border-2 rounded-2xl bg-white hover:bg-purple-50 hover:border-purple-400 transition-all font-bold text-sm text-gray-700 active:scale-[0.98] shadow-sm">${o}</button>`).join('')}</div>`;
             } else if (q.type === 'match') {
                 html += `
                     <p class="text-sm text-gray-500 mb-4">請點選左側工具再點選右側開發商進行配對：</p>
@@ -339,7 +374,7 @@
 
         function handleAns(isC) {
             const box = document.getElementById('question-box');
-            if(isC) { box.classList.add('correct-glow'); score += 10; document.getElementById('score-text').innerText = score; } 
+            if(isC) { box.classList.add('correct-glow'); score += 5; document.getElementById('score-text').innerText = score; } 
             else { box.classList.add('wrong-shake'); }
             setTimeout(() => {
                 totalCorrect++;
