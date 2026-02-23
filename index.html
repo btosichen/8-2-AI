@@ -121,7 +121,7 @@
     <!-- 登入頁面 -->
     <div id="login-screen" class="max-w-md mx-auto neon-card p-8 mt-10">
         <h1 class="text-3xl font-bold text-center mb-2 text-gray-800">🤖 AI 崛起：未來新世界</h1>
-        <p class="text-center text-gray-500 mb-8 text-sm">✨ 完成 20 題挑戰並觀看影片 ✨</p>
+        <p class="text-center text-gray-500 mb-8 text-sm">✨ 答對 20 題獲得學習成就 ✨</p>
         <div class="space-y-4">
             <select id="user-class" class="w-full p-3 rounded-lg border bg-white">
                 <option value="">選擇班級</option>
@@ -134,7 +134,7 @@
             </select>
             <input type="number" id="user-no" placeholder="座號" class="w-full p-3 rounded-lg border focus:ring-2 focus:ring-purple-400">
             <input type="text" id="user-name" placeholder="姓名" class="w-full p-3 rounded-lg border focus:ring-2 focus:ring-purple-400">
-            <button onclick="startApp()" class="w-full btn-neon mt-4">開始學習與測驗 🚀</button>
+            <button onclick="startApp()" class="w-full btn-neon mt-4">開始學習 🚀</button>
         </div>
     </div>
 
@@ -153,32 +153,30 @@
                     <span id="timer-text" class="font-bold text-blue-700">0s</span>
                 </div>
                 <div class="bg-purple-50 px-4 py-1 rounded-full border border-purple-100 text-center">
-                    <span class="text-[10px] block text-purple-500 font-bold">SCORE</span>
+                    <span class="text-[10px] block text-purple-500 font-bold">CORRECT</span>
                     <span id="score-text" class="font-bold text-purple-700">0</span>
                 </div>
             </div>
         </div>
 
         <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
-            <!-- 左側：教材重點與影片 -->
             <div class="lg:col-span-1">
                 <div class="neon-card p-5 min-h-[550px] bg-gray-50/50 flex flex-col">
                     <h3 class="font-bold text-lg mb-4 text-purple-700 border-b pb-2 flex justify-between">
-                        <span>📖 影片與思考</span>
-                        <span id="read-status" class="text-[10px] bg-gray-200 px-2 py-0.5 rounded-full">未完成</span>
+                        <span>📖 影片自學區</span>
+                        <span id="read-status" class="text-[10px] bg-gray-200 px-2 py-0.5 rounded-full">進行中</span>
                     </h3>
                     <div id="study-notes" class="flex-grow overflow-y-auto space-y-4"></div>
-                    <button id="btn-confirm-read" onclick="markAsRead()" class="w-full py-3 mt-4 bg-white text-purple-600 rounded-xl font-bold border border-purple-200 hover:bg-purple-50 transition-colors">我看完了！(+5%)</button>
+                    <button id="btn-confirm-read" onclick="markAsRead()" class="w-full py-3 mt-4 bg-white text-purple-600 rounded-xl font-bold border border-purple-200 hover:bg-purple-50 transition-colors">我已看完影片 (+5%)</button>
                 </div>
             </div>
 
-            <!-- 右側：題目區 -->
             <div class="lg:col-span-3">
                 <div id="level-nav" class="grid grid-cols-4 gap-2 mb-6 text-xs md:text-sm">
-                    <button id="nav-1" class="p-3 rounded-xl bg-white shadow-sm font-bold text-gray-300" disabled>1.原理史</button>
+                    <button id="nav-1" class="p-3 rounded-xl bg-white shadow-sm font-bold text-gray-300" disabled>1.技術原理</button>
                     <button id="nav-2" class="p-3 rounded-xl bg-white shadow-sm font-bold text-gray-300" disabled>2.法律倫理</button>
-                    <button id="nav-3" class="p-3 rounded-xl bg-white shadow-sm font-bold text-gray-300" disabled>3.領域應用</button>
-                    <button id="nav-4" class="p-3 rounded-xl bg-white shadow-sm font-bold text-gray-300" disabled>4.未來趨勢</button>
+                    <button id="nav-3" class="p-3 rounded-xl bg-white shadow-sm font-bold text-gray-300" disabled>3.生活應用</button>
+                    <button id="nav-4" class="p-3 rounded-xl bg-white shadow-sm font-bold text-gray-300" disabled>4.未來發展</button>
                 </div>
                 <div id="question-box" class="neon-card p-8 min-h-[480px] bg-white relative">
                     <div id="rush-timer" class="absolute top-6 right-6 w-14 h-14 rounded-full border-4 border-orange-400 flex items-center justify-center font-bold text-orange-600 bg-orange-50 hidden">10</div>
@@ -190,77 +188,72 @@
 
     <!-- 結算頁面 -->
     <div id="result-screen" class="max-w-md mx-auto neon-card p-8 mt-10 text-center hidden">
-        <div class="text-7xl mb-4">🏆</div>
-        <h2 class="text-3xl font-bold mb-2">挑戰結束</h2>
-        <div id="uploading-status" class="text-blue-500 text-sm mb-4 animate-pulse">正在上傳成績記錄...</div>
+        <div class="text-7xl mb-4">🎉</div>
+        <h2 class="text-3xl font-bold mb-2">挑戰完成！</h2>
+        <div id="uploading-status" class="text-blue-500 text-sm mb-4">正在寫入雲端記錄...</div>
         <div class="bg-white p-6 rounded-2xl border border-purple-100 space-y-4 mb-8 text-left">
-            <div class="flex justify-between"><span>原始得分：</span><span id="final-raw-score" class="font-bold"></span></div>
-            <div id="bonus-row" class="flex justify-between text-green-600 hidden"><span>📚 自學獎勵：</span><span class="font-bold">+5%</span></div>
-            <div class="flex justify-between text-2xl border-t pt-4 font-bold"><span>總成績：</span><span id="final-score" class="text-purple-600"></span></div>
+            <div class="flex justify-between"><span>答對題數：</span><span id="final-correct-count" class="font-bold"></span></div>
+            <div class="flex justify-between"><span>完成時間：</span><span id="final-time-used" class="font-bold"></span></div>
+            <div class="flex justify-between text-2xl border-t pt-4 font-bold text-purple-600"><span>最終總分：</span><span id="final-score"></span></div>
         </div>
         <button onclick="location.reload()" class="w-full btn-neon">重新挑戰 🌟</button>
     </div>
 
     <script>
         const _A = (s) => btoa(encodeURIComponent(s));
-        // GAS URL 保持不變
         const gasUrl = "https://script.google.com/macros/s/AKfycbzucU67nYMhc6hdjV2E1Z5mPckxnhHMmjegb0YHqbizKWMblQ8x6N7LeJfsPY_CK6Ddgg/exec";
 
         const levelsData = [
             {
-                level: 1, title: "AI 原理與發展史",
+                level: 1, title: "技術原理",
                 notes: [
-                    { icon: "🎞️", t: "影片：AI 人工智慧崛起", video: "rSajTSVvPYA", q: "思考：從早期『深藍』到現在的『ChatGPT』，AI 的學習方式發生了什麼轉變？" },
-                    { icon: "🧠", t: "核心技術", d: "LLM 大型語言模型透過海量數據預測下一個字，這就是它的『思考』方式。" }
+                    { icon: "🎞️", t: "影片：AI 人工智慧崛起", video: "rSajTSVvPYA", q: "思考：AI 如何像人類一樣從大量數據中找出規律？" }
                 ],
                 questions: [
                     { type: 'tf', q: "早期擊敗人類棋手的 AI (如深藍) 主要是依靠預設的『規則』而非自主學習。", a: "VHJ1ZQ==" },
-                    { type: 'choice', q: "根據影片，現代 AI 能夠變聰明的關鍵在於哪項技術？", options: ["更好的網路連接", "深度學習與神經網路", "更大的螢幕解析度", "更貴的電腦零件"], a: "深度學習與神經網路" },
-                    { type: 'choice', q: "生成式 AI（如 ChatGPT）的主要運作原理是什麼？", options: ["翻閱實體字典", "根據機率預測下一個最可能的字", "有人在後台偷偷打字回覆", "單純的複製貼上"], a: "根據機率預測下一個最可能的字" },
-                    { type: 'tf', q: "AI 有時會產生『幻覺』（假資訊），這是因為它是在計算機率而非查證事實。", a: "VHJ1ZQ==" },
-                    { type: 'choice', q: "下列哪一個不是生成式 AI 可以產出的內容？", options: ["文字文章", "畫作圖片", "音樂旋律", "實體漢堡"], a: "實體漢堡" }
+                    { type: 'choice', q: "現代 AI 能夠變聰明的關鍵在於哪項技術？", options: ["更好的網路", "深度學習與神經網路", "更大的記憶體", "更貴的電腦"], a: "深度學習與神經網路" },
+                    { type: 'choice', q: "生成式 AI（如 ChatGPT）的主要運作原理是什麼？", options: ["預測下一個字", "有人在後台回覆", "翻閱實體字典", "複製貼上"], a: "預測下一個字" },
+                    { type: 'tf', q: "AI 的『幻覺』是指它在計算機率時產生了錯誤事實。", a: "VHJ1ZQ==" },
+                    { type: 'choice', q: "下列何者是生成式 AI 的強項？", options: ["創造新內容", "搬運重物", "煮飯", "維修電路"], a: "創造新內容" }
                 ]
             },
             {
-                level: 2, title: "法律與倫理議題",
+                level: 2, title: "法律倫理",
                 notes: [
-                    { icon: "🎥", t: "影片：生成式 AI 與著作權", video: "N0mD0F_i0m8", q: "思考：AI 產生的作品如果沒有人類的獨創性貢獻，在法律上能受到保護嗎？" },
-                    { icon: "⚖️", t: "網路法律", d: "現實法律同樣約束網路行為。侵權與資安風險是使用 AI 時必須注意的重點。" }
+                    { icon: "🎥", t: "影片：生成式 AI 與著作權", video: "N0mD0F_i0m8", q: "思考：使用 AI 生成的作品版權應該屬於誰？" }
                 ],
                 questions: [
-                    { type: 'tf', q: "雖然是 AI 生成的內容，但在網路上散布謠言依然要負法律責任。", a: "VHJ1ZQ==" },
-                    { type: 'choice', q: "教育部影片提醒，我們在使用 AI 工具時，最不該上傳什麼資料？", options: ["今天的天氣預報", "自己的身分證字號與隱私文件", "英文單字列表", "食譜"], a: "自己的身分證字號與隱私文件" },
-                    { type: 'choice', q: "關於 AI 生成畫作的著作權，下列敘述何者正確？", options: ["版權完全屬於電腦軟體", "版權歸 OpenAI 公司所有", "需依人類指令的具體程度判斷是否具著作權", "誰先看到就歸誰"], a: "需依人類指令的具體程度判斷是否具著作權" },
-                    { type: 'tf', q: "即使是使用 AI 幫忙寫作業，若直接抄襲他人版權內容而不標註來源，仍可能有侵權風險。", a: "VHJ1ZQ==" },
-                    { type: 'choice', q: "在資訊倫理中，『標註 AI 生成來源』的主要目的是？", options: ["讓電腦高興", "落實誠信並對內容負責", "增加字數", "減少電腦電量消耗"], a: "落實誠信並對內容負責" }
+                    { type: 'tf', q: "在網路上散布 AI 生成的謠言不需要負法律責任。", a: "RmFsc2U=" },
+                    { type: 'choice', q: "在使用 AI 工具時，最不該上傳什麼資料？", options: ["天氣預報", "隱私與個資", "英文單字", "笑話"], a: "隱私與個資" },
+                    { type: 'choice', q: "關於 AI 生成作品，目前法律傾向如何判斷著作權？", options: ["歸電腦", "歸開發商", "看人類參與的程度", "誰看到歸誰"], a: "看人類參與的程度" },
+                    { type: 'tf', q: "未經授權使用他人作品訓練 AI 可能會有侵權風險。", a: "VHJ1ZQ==" },
+                    { type: 'choice', q: "標註 AI 來源的主要目的是什麼？", options: ["落實誠信與負責", "讓 AI 高興", "增加字數", "省電"], a: "落實誠信與負責" }
                 ]
             },
             {
-                level: 3, title: "各領域 AI 應用",
+                level: 3, title: "領域應用",
                 notes: [
-                    { icon: "🏥", t: "影片：AI 在醫療的機會", video: "N-CUqF7Xfww", q: "思考：台大醫院專家提到，AI 在判讀影像上比人類快且穩，醫生的角色將轉向何處？" },
-                    { icon: "🚗", t: "生活與交通", d: "從自駕輔助到智慧監測睡眠，AI 正在全面接手我們生活中的重複性分析工作。" }
+                    { icon: "🏥", t: "影片：AI 在醫療的機會", video: "N-CUqF7Xfww", q: "思考：AI 如何協助醫師更精準地發現病灶？" }
                 ],
                 questions: [
-                    { type: 'choice', q: "台大醫院醫師提到，AI 在醫療上最重要的貢獻之一是？", options: ["取代所有護理師", "精準輔助影像診斷，降低醫師疲勞錯誤", "發明長生不老藥", "自動幫病人付費"], a: "精準輔助影像診斷，降低醫師疲勞錯誤" },
-                    { type: 'choice', q: "智慧手環監測心跳與睡眠，是屬於 AI 在哪個領域的應用？", options: ["餐飲服務", "個人健康管理", "太空探索", "建築工程"], a: "個人健康管理" },
-                    { type: 'rush', q: "【搶答！】AI 情緒偵測系統主要透過什麼來判斷學生的心情？", options: ["掃描口袋", "分析語音、文字及面部特徵", "詢問父母", "看學生當天的早餐"], a: "分析語音、文字及面部特徵" },
-                    { type: 'match', q: "請配對正確的服務提供者：", pairs: [{ l: "Gemini", r: "Google", id: 2 }, { l: "ChatGPT", r: "OpenAI", id: 1 }] },
-                    { type: 'choice', q: "如果你要整合 Google 行事曆來安排 AI 生成的行程，哪一個工具最適合？", options: ["ChatGPT", "Gemini", "Siri", "小愛同學"], a: "Gemini" }
+                    { type: 'choice', q: "AI 在醫療影像上的主要功能是？", options: ["取代醫師", "輔助診斷與篩選異常", "發明藥水", "自動繳費"], a: "輔助診斷與篩選異常" },
+                    { type: 'choice', q: "智慧手環監測睡眠屬於哪種應用？", options: ["餐飲", "健康管理", "工程", "建築"], a: "健康管理" },
+                    { type: 'rush', q: "【搶答！】AI 情緒偵測系統如何判斷心情？", options: ["分析語音與文字特徵", "掃描錢包", "看早餐", "抽血"], a: "分析語音與文字特徵" },
+                    { type: 'match', q: "配對開發商：", pairs: [{ l: "Gemini", r: "Google", id: 2 }, { l: "ChatGPT", r: "OpenAI", id: 1 }] },
+                    { type: 'choice', q: "哪款 AI 與 Google 雲端整合最深？", options: ["Gemini", "ChatGPT", "Siri", "Alexa"], a: "Gemini" }
                 ]
             },
             {
-                level: 4, title: "未來趨勢與素養",
+                level: 4, title: "未來趨勢",
                 notes: [
-                    { icon: "💡", t: "影片：AI 與未來的趨勢", video: "7-vnQlakK_4", q: "思考：當重複性任務被自動化，你覺得哪種『人類特質』在未來工作最值錢？" },
-                    { icon: "🚀", t: "共存之道", d: "批判性思考、跨域協作、情感價值，是未來人才與 AI 協作的三大關鍵。" }
+                    { icon: "💡", t: "影片：AI 與未來的趨勢", video: "7-vnQlakK_4", q: "思考：面對 AI 浪潮，最重要的學習能力是什麼？" }
                 ],
                 questions: [
-                    { type: 'choice', q: "未來趨勢影片中提到，AI 主要是取代人類的什麼？", options: ["全部的人類價值", "重複性高、邏輯固定的任務", "人類的情感連結", "所有的實體勞動"], a: "重複性高、邏輯固定的任務" },
-                    { type: 'tf', q: "人機協作 (Human-AI) 的意思是讓 AI 做它擅長的數據處理，人類做決策與創意。", a: "VHJ1ZQ==" },
-                    { type: 'choice', q: "面對 AI 生成的大量訊息，最重要的媒體素養是？", options: ["全部相信並轉發", "拒絕使用任何訊息", "具備批判思考並主動查證來源", "只看標題就下判斷"], a: "具備批判思考並主動查證來源" },
-                    { type: 'choice', q: "哪種職業在未來最不容易被 AI 取代？", options: ["單純的數據輸入員", "規則簡單的翻譯員", "需要高度同理心與複雜判斷的心理醫師", "收銀員"], a: "需要高度同理心與複雜判斷的心理醫師" },
-                    { type: 'tf', q: "學習使用 AI 工具（如 AI 素養）將會像學習打字一樣，成為未來的基本能力。", a: "VHJ1ZQ==" }
+                    { type: 'choice', q: "AI 主要是取代什麼樣的工作？", options: ["全部工作", "重複性高、邏輯固定", "情感價值", "手工藝"], a: "重複性高、邏輯固定" },
+                    { type: 'tf', q: "人機協作將是未來職場的核心模式。", a: "VHJ1ZQ==" },
+                    { type: 'choice', q: "面對 AI 訊息，最需要的素養是？", options: ["完全相信", "批判性思考與查證", "不看任何訊息", "轉發"], a: "批判性思考與查證" },
+                    { type: 'choice', q: "下列哪種職業較難被 AI 取代？", options: ["數據輸入員", "規則翻譯員", "高情感同理心的心理醫師", "收銀員"], a: "高情感同理心的心理醫師" },
+                    { type: 'tf', q: "具備 AI 素養將成為未來的基本能力。", a: "VHJ1ZQ==" }
                 ]
             }
         ];
@@ -272,11 +265,11 @@
             const cls = document.getElementById('user-class').value;
             const no = document.getElementById('user-no').value;
             const nm = document.getElementById('user-name').value;
-            if (!cls || !no || !nm) return alert("請填寫完整的班級、座號與姓名！");
+            if (!cls || !no || !nm) return alert("請填寫資訊！");
             currentUser = { class: cls, no: no, name: nm };
             document.getElementById('login-screen').classList.add('hidden');
             document.getElementById('game-container').classList.remove('hidden');
-            document.getElementById('display-info').innerText = `${currentUser.class} 班 ${currentUser.no} 號 ${currentUser.name}`;
+            document.getElementById('display-info').innerText = `${cls} 班 ${no} 號 ${nm}`;
             gameTimer = setInterval(() => { totalTime++; document.getElementById('timer-text').innerText = totalTime + 's'; }, 1000);
             loadLevel(0);
         }
@@ -302,19 +295,15 @@
                     <div class="icon-box">${n.icon}</div>
                     <div class="w-full">
                         <h4 class="font-bold text-sm text-purple-800">${n.t}</h4>
-                        ${n.d ? `<p class="text-[11px] text-gray-500 mt-1">${n.d}</p>` : ''}
-                        ${n.video ? `
-                            <div class="video-container">
-                                <iframe src="https://www.youtube.com/embed/${n.video}" frameborder="0" allowfullscreen></iframe>
-                            </div>
-                            <p class="text-[10px] text-orange-600 font-bold mt-2">💡 ${n.q}</p>
-                        ` : ''}
+                        <div class="video-container">
+                            <iframe src="https://www.youtube.com/embed/${n.video}" frameborder="0" allowfullscreen></iframe>
+                        </div>
+                        <p class="text-[10px] text-orange-600 font-bold mt-2">💡 ${n.q}</p>
                     </div>
                 </div>
             `).join('');
             const btn = document.getElementById('btn-confirm-read');
-            btn.disabled = isRead; btn.innerText = isRead ? "掌握進度 ✅" : "我讀完了！(+5%)";
-            btn.className = isRead ? "w-full py-3 mt-4 bg-gray-100 text-gray-400 rounded-xl font-bold border border-gray-200 cursor-not-allowed" : "w-full py-3 mt-4 bg-white text-purple-600 rounded-xl font-bold border border-purple-200 hover:bg-purple-50 transition-colors";
+            btn.disabled = isRead; btn.innerText = isRead ? "掌握 ✅" : "已學習完畢 (+5%)";
         }
 
         function markAsRead() { readProgress[currentLevel] = true; updateNotes(); }
@@ -327,20 +316,20 @@
             document.getElementById('rush-timer').classList.add('hidden');
             clearInterval(rushTimerInterval);
 
-            let html = `<div class="mb-6"><span class="bg-purple-100 text-purple-600 px-3 py-1 rounded-full text-xs font-bold mb-2">題 ${totalCorrect + 1} / 20</span><h2 class="text-xl md:text-2xl font-bold text-gray-800 mt-2">${q.q}</h2></div>`;
+            let html = `<div class="mb-6"><span class="bg-purple-100 text-purple-600 px-3 py-1 rounded-full text-xs font-bold mb-2">第 ${totalCorrect + 1} 題 / 20</span><h2 class="text-xl md:text-2xl font-bold text-gray-800 mt-2">${q.q}</h2></div>`;
 
             if (q.type === 'tf') {
-                html += `<div class="grid grid-cols-2 gap-6 mt-8"><button onclick="checkAns('True')" class="py-12 border-2 rounded-3xl text-6xl bg-white hover:bg-blue-50 transition-all shadow-sm active:scale-95">⭕</button><button onclick="checkAns('False')" class="py-12 border-2 rounded-3xl text-6xl bg-white hover:bg-red-50 transition-all shadow-sm active:scale-95">❌</button></div>`;
+                html += `<div class="grid grid-cols-2 gap-6 mt-8"><button onclick="checkAns('True')" class="py-12 border-2 rounded-3xl text-6xl bg-white hover:bg-blue-50">⭕</button><button onclick="checkAns('False')" class="py-12 border-2 rounded-3xl text-6xl bg-white hover:bg-red-50">❌</button></div>`;
             } else if (q.type === 'choice' || q.type === 'rush') {
                 if(q.type === 'rush') { document.getElementById('rush-timer').classList.remove('hidden'); startRush(10); }
-                html += `<div class="space-y-3">${q.options.map(o => `<button onclick="checkAns('${o}')" class="w-full p-4 text-left border-2 rounded-2xl bg-white hover:bg-purple-50 hover:border-purple-400 transition-all font-bold text-sm text-gray-700 active:scale-[0.98] shadow-sm">${o}</button>`).join('')}</div>`;
+                html += `<div class="space-y-3">${q.options.map(o => `<button onclick="checkAns('${o}')" class="w-full p-4 text-left border-2 rounded-2xl bg-white hover:bg-purple-50 font-bold text-sm shadow-sm">${o}</button>`).join('')}</div>`;
             } else if (q.type === 'match') {
                 html += `
                     <div class="flex gap-4">
-                        <div class="flex-1 space-y-3">${levelsData[currentLevel].questions[currentQIdx].pairs.map((p,i)=>`<button id="l-${p.id}" onclick="selM('l',${p.id})" class="w-full p-4 border rounded-xl bg-gray-50 font-bold transition-all shadow-sm">${p.l}</button>`).join('')}</div>
-                        <div class="flex-1 space-y-3">${[{r:'Google',id:2},{r:'OpenAI',id:1}].map((p,i)=>`<button id="r-${p.id}" onclick="selM('r',${p.id})" class="w-full p-4 border rounded-xl bg-gray-50 font-bold transition-all shadow-sm">${p.r}</button>`).join('')}</div>
+                        <div class="flex-1 space-y-3">${levelsData[currentLevel].questions[currentQIdx].pairs.map((p)=>`<button id="l-${p.id}" onclick="selM('l',${p.id})" class="w-full p-4 border rounded-xl bg-gray-50 font-bold">${p.l}</button>`).join('')}</div>
+                        <div class="flex-1 space-y-3">${[{r:'Google',id:2},{r:'OpenAI',id:1}].map((p)=>`<button id="r-${p.id}" onclick="selM('r',${p.id})" class="w-full p-4 border rounded-xl bg-gray-50 font-bold">${p.r}</button>`).join('')}</div>
                     </div>
-                    <button id="ms" onclick="checkM()" class="btn-neon w-full mt-8 opacity-50 cursor-not-allowed" disabled>確認配對</button>
+                    <button id="ms" onclick="checkM()" class="btn-neon w-full mt-8 opacity-50" disabled>確認配對</button>
                 `;
             }
             area.innerHTML = html;
@@ -350,21 +339,15 @@
             let left = s; document.getElementById('rush-timer').innerText = left;
             rushTimerInterval = setInterval(() => { 
                 left--; document.getElementById('rush-timer').innerText = left; 
-                if(left <= 3) document.getElementById('rush-timer').classList.add('animate-pulse', 'text-red-600');
                 if(left<=0) { clearInterval(rushTimerInterval); handleAns(false); } 
             }, 1000);
         }
 
         let sL, sR, mtch = [];
         window.selM = (side, id) => {
-            if(side==='l') { sL=id; document.querySelectorAll("[id^='l-']").forEach(b=>b.className="w-full p-4 border rounded-xl bg-gray-50 font-bold shadow-sm"); document.getElementById(`l-${id}`).className="w-full p-4 border-2 border-purple-400 bg-purple-50 font-bold shadow-sm"; }
-            else { sR=id; document.querySelectorAll("[id^='r-']").forEach(b=>b.className="w-full p-4 border rounded-xl bg-gray-50 font-bold shadow-sm"); document.getElementById(`r-${id}`).className="w-full p-4 border-2 border-purple-400 bg-purple-50 font-bold shadow-sm"; }
-            if(sL && sR) { 
-                mtch = mtch.filter(m=>m.l!==sL); mtch.push({l:sL, r:sR}); 
-                document.getElementById(`l-${sL}`).classList.add('border-green-400','bg-green-50');
-                document.getElementById(`r-${sR}`).classList.add('border-green-400','bg-green-50');
-                sL=sR=null; 
-            }
+            if(side==='l') { sL=id; document.querySelectorAll("[id^='l-']").forEach(b=>b.className="w-full p-4 border rounded-xl bg-gray-50 font-bold"); document.getElementById(`l-${id}`).className="w-full p-4 border-2 border-purple-400 bg-purple-50 font-bold"; }
+            else { sR=id; document.querySelectorAll("[id^='r-']").forEach(b=>b.className="w-full p-4 border rounded-xl bg-gray-50 font-bold"); document.getElementById(`r-${id}`).className="w-full p-4 border-2 border-purple-400 bg-purple-50 font-bold"; }
+            if(sL && sR) { mtch = mtch.filter(m=>m.l!==sL); mtch.push({l:sL, r:sR}); sL=sR=null; }
             if(mtch.length===2) { const b=document.getElementById('ms'); b.disabled=false; b.className="btn-neon w-full mt-8"; }
         };
         function checkM() { handleAns(mtch.every(m => m.l === m.r)); mtch=[]; }
@@ -376,13 +359,10 @@
             if(isC) { box.classList.add('correct-glow'); score += 5; document.getElementById('score-text').innerText = score; } 
             else { box.classList.add('wrong-shake'); }
             setTimeout(() => {
-                totalCorrect++;
-                currentQIdx++;
-                if(currentQIdx >= levelsData[currentLevel].questions.length) {
-                    currentLevel++;
-                    if(currentLevel >= levelsData.length) finish();
-                    else loadLevel(currentLevel);
-                } else { updateNav(); loadQuestion(); }
+                totalCorrect++; currentQIdx++;
+                if(currentLevel === 3 && currentQIdx >= 5) finish();
+                else if(currentQIdx >= 5) loadLevel(currentLevel + 1);
+                else { updateNav(); loadQuestion(); }
             }, 800);
         }
 
@@ -393,36 +373,30 @@
             
             const allRead = readProgress.every(r=>r);
             let final = score;
-            if(allRead) { final = Math.min(100, Math.round(score * 1.05)); document.getElementById('bonus-row').classList.remove('hidden'); }
+            if(allRead) final = Math.min(100, Math.round(score * 1.05));
             
-            document.getElementById('final-raw-score').innerText = score;
-            document.getElementById('final-score').innerText = final;
+            document.getElementById('final-correct-count').innerText = (score/5) + " 題";
+            document.getElementById('final-time-used').innerText = totalTime + " 秒";
+            document.getElementById('final-score').innerText = final + " 分";
             
-            // 重要：修正傳輸邏輯，使用更可靠的傳輸方式
-            const data = {
+            // 重要：修正欄位名稱，完全對應 GAS 的 JSON.parse 欄位
+            const dataToGas = {
                 class: currentUser.class,
                 no: currentUser.no,
                 name: currentUser.name,
-                rawScore: score.toString(),     // 確保為字串
-                finalScore: final.toString(),   // 確保為字串
-                bonus: allRead ? "Yes" : "No",
-                timeUsed: totalTime.toString() + "s",
-                timestamp: new Date().toLocaleString()
+                level: "AI 崛起測驗", // 對應 data.level
+                correct: (score/5).toString(), // 對應 data.correct (答對題數)
+                time: totalTime.toString(), // 對應 data.time (秒)
+                date: new Date().toLocaleString() // 對應 data.date
             };
 
-            // 使用 POST 提交
             fetch(gasUrl, {
                 method: 'POST',
-                mode: 'no-cors', // GAS 需要 no-cors 或特殊處理，這裡使用 no-cors 以防跨域報錯，但我們會改用 URL 參數或更穩定的結構
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(data)
+                mode: 'no-cors',
+                body: JSON.stringify(dataToGas)
             }).then(() => {
-                document.getElementById('uploading-status').innerText = "✅ 成績已成功記錄於雲端";
-                document.getElementById('uploading-status').classList.remove('text-blue-500', 'animate-pulse');
-                document.getElementById('uploading-status').classList.add('text-green-600');
-            }).catch(err => {
-                document.getElementById('uploading-status').innerText = "⚠️ 記錄可能未成功，請截圖保存。";
-                console.error(err);
+                document.getElementById('uploading-status').innerText = "✅ 成績已寫入試算表";
+                document.getElementById('uploading-status').className = "text-green-600 text-sm mb-4";
             });
         }
     </script>
